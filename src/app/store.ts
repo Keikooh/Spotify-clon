@@ -1,17 +1,28 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-export const useTrackStore = create( ( set ) => ({
-    // state
-    track: { 
-        name: "no name",
-        artist: "no artist",
-        image: null,
-        duration: 0,
-        progress: 0,
-        isPlaying: false,
+export const usePlayerStore = create((set) => ({
+  // state
+  player: {
+    isPlaying: false,
+    playMode: "single",
+    shuffleIsActive: false,
+    repeatMode: "off",
+    track: {
+      name: "no name",
+      artist: "no artist",
+      image: null,
+      duration: 0,
+      progress: 0,
     },
-    // actions
-    setTrack: ( track ) => {
-        set( ( state ) => ({ track }));
-    },
+  },
+  // actions
+  setPlayer: (partial) => {
+    set((state) => ({
+      player: {
+        ...state.player,
+        ...partial,
+        track: partial.track ?? state.player.track,
+      },
+    }));
+  },
 }));

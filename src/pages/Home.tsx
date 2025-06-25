@@ -38,7 +38,7 @@ const Home = () => {
         <div className="flex h-full gap-3">
           {/* SideBar */}
           <SideBar />
-          
+
           {/* MainContent */}
           <MainContent />
         </div>

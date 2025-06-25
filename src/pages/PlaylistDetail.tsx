@@ -8,6 +8,7 @@ import { IoTimeOutline } from "react-icons/io5";
 import { IoMdPlay } from "react-icons/io";
 import { LuPen } from "react-icons/lu";
 import PlayButton from '../components/Buttons/PlayButton';
+import ShuffleButton from "../components/Buttons/ShuffleButton";
 
 const PlaylistDetail = () => {
   const { id } = useParams();
@@ -52,7 +53,7 @@ const PlaylistDetail = () => {
           </div>
         </div>
 
-        <div className="mx-2">
+        <div className="mx-2 flex gap-2">
           <PlayButton
             uri={playlist.uri}
             isArtist={false}
@@ -60,6 +61,7 @@ const PlaylistDetail = () => {
             styles="size-15 flex"
             playMode="context"
           />
+          <ShuffleButton size="size-10"/>
         </div>
         <table className="table-auto w-full text-left rtl:text-right">
           <thead className="text-left p-2">

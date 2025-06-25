@@ -1,42 +1,49 @@
 import { useEffect, useState } from "react";
 import { formatTime, formatTimeSeconds } from "../utils/formats";
+import { usePlayerStore } from "../app/store";
 
-const DurationBar = ({ data }) => {
-  
-  const { duration, progress, isPlaying } = data
-  const totalSeconds = Math.floor(duration / 1000); // convertir ms a segundos
-  const [progressbar, setProgress] = useState(progress);
+const DurationBar = () => {
+  const player = usePlayerStore((state) => state.player);
+
+  const {
+    track: { duration: duration_ms, progress: progress_ms },
+    isPlaying,
+  } = player;
+
+  const duration = Math.floor(duration_ms / 1000);
+  const [progress, setProgress] = useState(progress_ms);
   const [progressFormat, setProgressFormat] = useState("");
 
-  const time = formatTime(duration);
+  const [isFinished, setisFinished] = useState(false);
+  const time = formatTime(duration_ms);
 
   useEffect(() => {
-    setProgress(0);
-  }, [duration]);
+    setProgress(Math.floor(progress_ms / 1000));
+    setisFinished(false);
 
-  useEffect(() => {
-    setProgressFormat(formatTimeSeconds(progressbar));
-    if( progressbar === totalSeconds ){
-      setProgress(0);
-    }
-  }, [progressbar]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
-      setProgress((prev) => (prev < totalSeconds ? prev + 1 : prev));
+      setProgress((prev) => (prev < duration ? prev + 1 : prev));
     }, 1000);
 
-    
     return () => clearInterval(interval);
-  }, [totalSeconds]);
+  }, [player.track]);
 
-  const percentage = (progressbar / totalSeconds) * 100;
+  useEffect(() => {
+    setProgressFormat(formatTimeSeconds(progress));
+    if (progress === duration) {
+      setisFinished(true);
+    }
+  }, [progress]);
+
+  useEffect(() => {}, [isFinished]);
+
+  const percentage = (progress / duration) * 100;
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <span>{progressFormat}</span>
+      <span>{isFinished ? "0:00" : progressFormat}</span>
       <div className="w-full h-1 bg-gray-700 rounded-full">
-        {duration > 0 && (
+        {duration_ms > 0 && !isFinished && (
           <div
             className="h-1 bg-white rounded-full transition-all duration-200"
             style={{ width: `${percentage}%` }}

@@ -36,14 +36,16 @@ export const playTrack = async (
   trackUri: string,
   deviceId: string,
   accessToken: string | null,
-  playMode: 'single' | 'context',
-  isArtist:boolean,
-  offsetPosition:number = 0
+  playMode: "single" | "context",
+  isArtist: boolean,
+  offsetPosition: number = 0
 ) => {
   try {
     const body = {
-      ...(playMode === 'context' ? { context_uri: trackUri } : { uris: [trackUri] }),
-      ...(!isArtist && { offset: { position: offsetPosition}}),
+      ...(playMode === "context"
+        ? { context_uri: trackUri }
+        : { uris: [trackUri] }),
+      ...(!isArtist && { offset: { position: offsetPosition } }),
       position_ms: 0,
     };
 
@@ -83,6 +85,89 @@ export const getRecentlyPlayedTracks = async (accessToken: string | null) => {
     });
 
     return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setPlaybackVolume = async (
+  accessToken: string | null,
+  volumePercent: number,
+  deviceId: string
+) => {
+  const params = new URLSearchParams({
+    volume_percent: volumePercent,
+    device_id: deviceId,
+  });
+  try {
+    await fetch(`${API_BASE_URL}/me/player/volume?${params.toString()}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const goTo = async (
+  accessToken: string | null,
+  deviceId: string,
+  direction: "previous" | "next"
+) => {
+  const params = new URLSearchParams({
+    device_id: deviceId,
+  });
+  try {
+    await fetch(`${API_BASE_URL}/me/player/${direction}?${params.toString()}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setShuffleState = async (
+  accessToken: string | null,
+  deviceId: string,
+  state: boolean
+) => {
+  const params = new URLSearchParams({
+    device_id: deviceId,
+    state: state,
+  });
+  try {
+    await fetch(`${API_BASE_URL}/me/player/shuffle?${params.toString()}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setRepeatMode = async (
+  accessToken: string | null,
+  deviceId: string,
+  state: "context" | "track" | "off"
+) => {
+  const params = new URLSearchParams({
+    device_id: deviceId,
+    state: state,
+  });
+  try {
+    await fetch(`${API_BASE_URL}/me/player/repeat?${params.toString()}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   } catch (error) {
     console.log(error);
   }

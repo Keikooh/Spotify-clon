@@ -1,5 +1,4 @@
 import { fetchDevices, playTrack } from "../../services/SpotifyServices";
-import { useTrackStore } from "../../app/store";
 import { usePlayer } from "../../hooks/usePlayer";
 
 // icons
@@ -25,7 +24,7 @@ type Props = {
 const variantClasses = {
   floating:
     "text-gray-950 bg-green-500 p-3 rounded-full hover:bg-green-300 hover:scale-110 shadow-xl",
-  onImage: "hidden absolute inset-0 w-full group-hover:flex text-white",
+  onImage: "hidden absolute w-full inset-0 group-hover:flex text-white",
   row: "",
 };
 const PlayButton: React.FC<Props> = ({
@@ -38,10 +37,13 @@ const PlayButton: React.FC<Props> = ({
   offsetPosition
 }) => {
   const play = usePlayer();
-
+ 
   return (
     <button
-      onClick={() => play({ uri, playMode: playMode, isArtist, track, offsetPosition})}
+      onClick={() => {
+        play({ uri, playMode, isArtist, track, offsetPosition})
+        // console.log(track)
+      }}
       className={`${styles}  ${variantClasses[variant]} items-center justify-center transition duration-150 ease-in-out cursor-pointer `}
     >
       <FaPlay />

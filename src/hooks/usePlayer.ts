@@ -1,5 +1,9 @@
-import { useTrackStore } from "../app/store";
-import { fetchDevices, playTrack } from "../services/SpotifyServices";
+import { usePlayerStore } from "../app/store";
+import {
+  fetchDevices,
+  fetchPlayState,
+  playTrack,
+} from "../services/SpotifyServices";
 
 type props = {
   uri: string;
@@ -18,9 +22,7 @@ type props = {
 
 export const usePlayer = () => {
   const accessToken = localStorage.getItem("access_token");
-  const setTrack = useTrackStore((state) => state.setTrack);
-
-  const getFirstTrackFromContext = () => {};
+  const setPlayer = usePlayerStore((state) => state.setPlayer);
 
   const play = async ({
     uri,
@@ -43,17 +45,46 @@ export const usePlayer = () => {
       );
 
       if (track) {
-        const { name, artist, image, duration, progress, isPlaying } = track;
-        setTrack({
+
+        
+        const {
           name,
           artist,
           image,
           duration,
           progress,
+          isPlaying
+        } = track;
+        
+        setPlayer({
+          track: {
+            name,
+            artist,
+            image,
+            duration,
+            progress,
+          },
           isPlaying,
+          playMode,
         });
-      }else{ //si no viene el track quiere decir que es un album o una paylist y se tiene que obtener la cancion actual
+      } else {
+        setTimeout(async () => {
+          const data = await fetchPlayState(accessToken);
 
+          const currentPlayer = {
+            track: {
+              name: data.item.name,
+              artist: data.item.artists.map((artist) => artist.name).join(", "),
+              image: data.item.album.images[0].url,
+              duration: data.item.duration_ms,
+              progress: data.progress_ms,
+            },
+            isPlaying: data.is_playing,
+            playMode,
+          };
+
+          setPlayer(currentPlayer);
+        }, 600); // Because of the Spotify Player delay
       }
     }
   };

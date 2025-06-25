@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { fetchDevices, playTrack } from "../../services/SpotifyServices";
-import { useTrackStore } from "../../app/store";
+
 import { formatTime } from "../../utils/formats";
 
 // icons
@@ -22,6 +22,7 @@ const Track = ({ data }) => {
     progress: 0,
     isPlaying: true
   }
+  
   return (
     <li className="flex justify-between items-center rounded-lg p-2 hover:bg-gray-900 transition duration-150">
       <div className=" flex gap-2 w-full">

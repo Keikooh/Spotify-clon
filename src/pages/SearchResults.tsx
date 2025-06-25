@@ -4,11 +4,7 @@ import Track from "../components/Track/Track";
 import ResultSection from "../components/ResultSection";
 import PlayButton from "../components/Buttons/PlayButton";
 
-type props = {
-  image: string;
-  title: string;
-  subtitle: string;
-};
+
 const SearchResults = () => {
   const location = useLocation();
   const result = location.state?.result;
