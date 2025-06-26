@@ -1,49 +1,53 @@
 import React, { useEffect, useState } from "react";
-import MainContent from "../components/MainContent";
-import Header from "../components/Header";
-import PlayerBar from "../components/PlayerBar/PlayerBar";
-import SideBar from "../components/SideBar/SideBar";
-
-import { getProfile } from "../services/SpotifyServices";
-import { useNavigate } from "react-router-dom";
+import ResultSection from "../components/ResultSection";
+import { fetchUserPlaylists } from "../components/SideBar/SideBar.service";
+import Playlists from "../components/Playlists/Playlists";
+import { getUsersTopItems } from "../services/SpotifyServices";
 
 const Home = () => {
-  const accessToken: string | null = localStorage.getItem("access_token");
-  const [profile, setProfile] = useState<any>(null);
-  const navigate = useNavigate();
+  const accessToken = localStorage.getItem("access_token");
+  const userId = localStorage.getItem("user_id");
+  const [playlists, setplaylists] = useState([]);
+  const [topArtists, settopArtists] = useState([]);
+  const [topTracks, settopTracks] = useState([]);
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await getProfile(accessToken);
-
-      setProfile(result);
+    const getUserPlaylists = async () => {
+      const data = await fetchUserPlaylists(userId, accessToken);
+      if (data) {
+        setplaylists(data.items);
+      }
     };
 
-    getData();
+    const getTopItems = async () => {
+      const artists = await getUsersTopItems(accessToken, "artists");
+      const tracks = await getUsersTopItems(accessToken, "tracks");
 
-    if (!accessToken) {
-      navigate("/");
-    }
-  }, [accessToken]);
+      if (artists) {
+        settopArtists(artists.items);
+        settopTracks(tracks.items);
+      }
+    };
 
-  const props = {
-    image: profile?.images[0].url || "Not found",
-    name: profile?.display_name || "Not found",
-  };
+    getTopItems();
+    getUserPlaylists();
+  }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-black select-none">
-      {profile && <Header {...props} />}
-      <main className="flex-1 overflow-hidden">
-        <div className="flex h-full gap-3">
-          {/* SideBar */}
-          <SideBar />
-
-          {/* MainContent */}
-          <MainContent />
-        </div>
-      </main>
-      <PlayerBar />
+    <div className="flex flex-col h-full overflow-y-auto gap-y-10">
+      <Playlists style="horizontal" list={playlists} />
+      <ResultSection
+        title="Top artists"
+        itemList={topArtists.map((artist) => ({
+          id: artist.id,
+          uri: artist.uri,
+          image: artist.images[0].url,
+          title: artist.name,
+          subtitle: "Artist",
+          type: "artist",
+        }))}
+        playMode="context"
+      />
     </div>
   );
 };

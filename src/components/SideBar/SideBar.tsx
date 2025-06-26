@@ -36,7 +36,7 @@ const SideBar = () => {
           Create
         </button>
       </div>
-      <Playlists list={playlists} />
+      <Playlists style="vertical" list={playlists} />
     </aside>
   );
 };

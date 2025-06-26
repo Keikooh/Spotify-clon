@@ -16,6 +16,21 @@ export const getProfile = async (accessToken: string | null) => {
   }
 };
 
+export const getUsersTopItems = async (accessToken: string | null, type:string) => {
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/me/top/${type}?limit=5`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting profile: ", error);
+  }
+};
+
 // Player
 
 export const fetchDevices = async (accessToken: string | null) => {

@@ -9,6 +9,7 @@ const scope: string = [
   "user-read-playback-state",
   "user-modify-playback-state",
   "user-read-currently-playing",
+  "user-top-read",
 ].join(" ");
 
 export const handleClick = async () => {
