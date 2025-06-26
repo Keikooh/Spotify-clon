@@ -3,6 +3,7 @@ import { usePlayerStore } from "../../app/store";
 import ControlButton from "./ControlButton";
 import { LuRepeat } from "react-icons/lu";
 import { fetchDevices, setRepeatMode } from "../../services/SpotifyServices";
+import { LuRepeat1 } from "react-icons/lu";
 
 const RepeatButton = () => {
   const playerState = usePlayerStore((state) => state.player);
@@ -33,13 +34,12 @@ const RepeatButton = () => {
     <ControlButton
       message="Repeat"
       isEnabled={true}
-      icon={LuRepeat}
+      icon={ repeatMode === "track" ? LuRepeat1: LuRepeat}
       handleClick={handleRepeat}
       mode={repeatMode}
       size="size-2"
       styles={`${repeatMode !== "off" && "text-green-300 relative"}`}
     >
-        {repeatMode === 'track' && (<span className="absolute top-0 -right-2 font-bold color-green-300 text-xs">1</span>)}
       {repeatMode !== "off" && (
         <div className="absolute -bottom-1 left-1/3 size-1 rounded-full bg-green-300"></div>
       )}

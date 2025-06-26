@@ -10,7 +10,7 @@ const DurationBar = () => {
     isPlaying,
   } = player;
 
-  const duration = Math.floor(duration_ms / 1000);
+  const duration = isPlaying ? Math.floor(duration_ms / 1000) : 0;
   const [progress, setProgress] = useState(progress_ms);
   const [progressFormat, setProgressFormat] = useState("");
 
@@ -32,6 +32,7 @@ const DurationBar = () => {
     setProgressFormat(formatTimeSeconds(progress));
     if (progress === duration) {
       setisFinished(true);
+      // Obtener status del payer y setear en el store la cancion
     }
   }, [progress]);
 
@@ -43,7 +44,7 @@ const DurationBar = () => {
     <div className="flex items-center gap-2 text-sm">
       <span>{isFinished ? "0:00" : progressFormat}</span>
       <div className="w-full h-1 bg-gray-700 rounded-full">
-        {duration_ms > 0 && !isFinished && (
+        {duration > 0 && !isFinished && (
           <div
             className="h-1 bg-white rounded-full transition-all duration-200"
             style={{ width: `${percentage}%` }}

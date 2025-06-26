@@ -33,12 +33,23 @@ export const PlayerBar = () => {
     track: { name, artist, image },
     isPlaying,
     playMode,
+    repeatMode
   } = playerState;
 
   // Handles
 
+  const changeRepeatMode = () => {
+    
+    if(repeatMode === "track") {
+      return "context"
+    }else return repeatMode
+  }
   const handleClick = () => {};
   const handleNext = async () => {
+
+    setPlayer({repeatMode: changeRepeatMode()});
+    console.warn(repeatMode);
+
     const devices = await fetchDevices(accessToken);
 
     if (devices) {
@@ -48,6 +59,8 @@ export const PlayerBar = () => {
   };
 
   const handlePrevious = async () => {
+    setPlayer({repeatMode: changeRepeatMode()});
+    
     const devices = await fetchDevices(accessToken);
 
     if (devices) {
@@ -63,16 +76,17 @@ export const PlayerBar = () => {
       if (data) {
         const isPlaying = data.is_playing;
 
-        // Ya se esta reproduciendo una cancion en spotify app
-        if (isPlaying) {
-          const name = data.item.name;
-          const image = data.item.album.images[0].url;
-          const duration = data.item.duration_ms;
-          const progress = data.progress_ms;
-          const artist = data.item.artists
-            .map((artist) => artist.name)
-            .join(", ");
+        const name = data.item.name;
+        const image = data.item.album.images[0].url;
+        const duration = data.item.duration_ms;
+        const progress = data.progress_ms;
+        const artist = data.item.artists
+          .map((artist) => artist.name)
+          .join(", ");
 
+        const shuffleIsActive = data.shuffle_state;
+        const repeatMode = data.repeat_state;
+    
           setPlayer({
             track: {
               name,
@@ -83,10 +97,10 @@ export const PlayerBar = () => {
             },
             isPlaying,
             playMode: "single",
+            shuffleIsActive,
+            repeatMode
           });
-        } else {
-          // Buscar ultima cancion reproducida
-        }
+        
       }
     };
 
