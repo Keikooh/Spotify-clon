@@ -17,7 +17,7 @@ const CardItem: React.FC<Props> = ({ data, playMode }) => {
   return (
     <li
       key={id}
-      className="group w-1/4 flex flex-col gap-y-2 p-3 rounded-lg hover:bg-gray-900 transition duration-150 cursor-pointer"
+      className="group w-1/5 flex flex-col gap-y-2 p-3 rounded-lg hover:bg-gray-900 transition duration-150 cursor-pointer"
     >
       <div className="relative">
         <img

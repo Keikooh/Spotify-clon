@@ -11,16 +11,17 @@ type data = {
 };
 type props = {
   title: string;
+  wrap: boolean;
   itemList: data[];
   playMode?: "single" | "context";
 };
 
-const ResultSection: React.FC<props> = ({ title, itemList, playMode }) => {
+const ResultSection: React.FC<props> = ({ title, wrap, itemList, playMode }) => {
   return (
     itemList.length > 0 && (
       <section className="flex flex-col gap-y-2">
         <h2 className="font-bold text-2xl px-3">{title}</h2>
-        <ul className="flex w-full">
+        <ul className={`flex w-full ${wrap === true && "flex-wrap"}`}>
           {itemList.map((item) => (
             <CardItem
               data={item}

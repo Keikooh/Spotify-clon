@@ -1,6 +1,5 @@
 import { IoSearch } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { getSearchResult } from './SearchBar.service';
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 
@@ -18,20 +17,7 @@ function SearchBar() {
   useEffect(() => {
     
     if( value !== "" ){
-      const fetchTrack = async() => {
-      const result = await getSearchResult(accessToken, debounceValue);
-
-      if( result.error){
-        const status = result.error.status;
-        if( status === 401 ){
-          navigate("/");
-        }
-      }
-      navigate("/home/search", {
-        state: { result, debounceValue },
-      })
-    }
-    fetchTrack();
+      navigate(`/home/search/${value}`);
     }
   }, [debounceValue])
   

@@ -1,5 +1,9 @@
 export { default as Callback } from "./Callback";
-export { default as SearchResults } from "./SearchResults";
+export { default as SearchResults } from "./Search/SearchResults";
+export { default as AllResults } from "./Search/AllResults";
+export { default as ArtistsResults } from "./Search/ArtistsResults";
+export { default as PlaylistsResults } from "./Search/PlaylistsResults";
+export { default as PodcastsResults } from "./Search/PodcastsResult";
 export { default as MainHome } from "./MainHome";
 export { default as Home } from "./Home";
 export { default as PlaylistDetail } from "./PlaylistDetail";
