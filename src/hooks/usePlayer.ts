@@ -5,18 +5,13 @@ import {
   playTrack,
 } from "../services/SpotifyServices";
 
+import type { Track } from "../models/Track";
+
 type props = {
   uri: string;
   playMode: "single" | "context";
   isArtist: boolean;
-  track?: {
-    image: string;
-    artist: string;
-    name: string;
-    duration: number;
-    progress?: number;
-    isPlaying?: boolean;
-  };
+  track?: Track
   offsetPosition?: number;
 };
 
@@ -49,7 +44,7 @@ export const usePlayer = () => {
         
         const {
           name,
-          artist,
+          artists,
           image,
           duration,
           progress,
@@ -59,7 +54,7 @@ export const usePlayer = () => {
         setPlayer({
           track: {
             name,
-            artist,
+            artists,
             image,
             duration,
             progress,
@@ -74,7 +69,7 @@ export const usePlayer = () => {
           const currentPlayer = {
             track: {
               name: data.item.name,
-              artist: data.item.artists.map((artist) => artist.name).join(", "),
+              artists: data.item.artists.map((artist) => artist.name).join(", "),
               image: data.item.album.images[0].url,
               duration: data.item.duration_ms,
               progress: data.progress_ms,

@@ -42,7 +42,6 @@ const PlayButton: React.FC<Props> = ({
     <button
       onClick={() => {
         play({ uri, playMode, isArtist, track, offsetPosition})
-        // console.log(track)
       }}
       className={`${styles}  ${variantClasses[variant]} items-center justify-center transition duration-150 ease-in-out cursor-pointer `}
     >

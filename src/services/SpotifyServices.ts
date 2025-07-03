@@ -225,3 +225,48 @@ export const getSearchResult = async (accessToken: string | null, value: string,
       console.error("Error getting track: ", error);
     }
   };
+
+// Artist
+export const getArtist = async (accessToken: string|null, id:string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/artists/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getArtistsTopTracks = async (accessToken: string|null, id:string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/artists/${id}/top-tracks`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Album
+
+export const getAlbum = async (accessToken: string|null, id:string) => {
+    try {
+    const response = await fetch(`${API_BASE_URL}/albums/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -85,6 +85,7 @@ const AllResults = () => {
           subtitle: "Artist",
           type: "artist",
         }))}
+        path="artist"
         playMode="context"
       />
 
@@ -101,6 +102,7 @@ const AllResults = () => {
           }`,
           type: "album",
         }))}
+        path="album"
         playMode="context"
       />
 
@@ -115,6 +117,7 @@ const AllResults = () => {
           subtitle: `By ${playlist.owner.display_name}`,
           type: "album",
         }))}
+        path="playlist"
         playMode="context"
       />
 
@@ -129,6 +132,7 @@ const AllResults = () => {
           subtitle: podcast.publisher,
           type: "podcast",
         }))}
+        path="show"
       />
     </div>
   );

@@ -30,7 +30,7 @@ export const PlayerBar = () => {
   const setPlayer = usePlayerStore((state) => state.setPlayer);
 
   const {
-    track: { name, artist, image },
+    track: { name, artists, image },
     isPlaying,
     playMode,
     repeatMode
@@ -80,7 +80,7 @@ export const PlayerBar = () => {
         const image = data.item.album.images[0].url;
         const duration = data.item.duration_ms;
         const progress = data.progress_ms;
-        const artist = data.item.artists
+        const artists = data.item.artists
           .map((artist) => artist.name)
           .join(", ");
 
@@ -90,7 +90,7 @@ export const PlayerBar = () => {
           setPlayer({
             track: {
               name,
-              artist,
+              artists,
               image,
               duration,
               progress,
@@ -123,7 +123,7 @@ export const PlayerBar = () => {
         <img className="w-15 h-15 rounded-lg" src={image} alt={name} />
         <div className="flex flex-col">
           <span className="font-semibold">{name}</span>
-          <span className="opacity-70 text-sm">{artist}</span>
+          <span className="opacity-70 text-sm">{artists}</span>
         </div>
 
         <MdAddCircleOutline />

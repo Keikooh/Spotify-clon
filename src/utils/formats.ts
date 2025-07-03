@@ -33,3 +33,14 @@ export const formatDate = (date): string => {
     months[newDate.getMonth()]
   }, ${newDate.getFullYear()}`;
 };
+
+export const formatNumber = (str: string): string => {
+  let formatedNumber = "";
+  for (let i = -1; i >= -str.length; i -= 1) {
+    formatedNumber = `${str[str.length + i]}${formatedNumber}`;
+    if (i % 3 === 0) {
+      formatedNumber = `${i !== -str.length ? "," : ""} ${formatedNumber}`;
+    }
+  }
+  return formatedNumber.trimStart();
+};

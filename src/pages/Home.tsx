@@ -38,6 +38,7 @@ const Home = () => {
       <Playlists style="horizontal" list={playlists} />
       <ResultSection
         title="Top artists"
+        wrap={false}
         itemList={topArtists.map((artist) => ({
           id: artist.id,
           uri: artist.uri,
@@ -46,6 +47,7 @@ const Home = () => {
           subtitle: "Artist",
           type: "artist",
         }))}
+        path="artist"
         playMode="context"
       />
     </div>

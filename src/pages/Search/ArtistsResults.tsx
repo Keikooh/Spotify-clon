@@ -41,6 +41,7 @@ const ArtistsResults = () => {
           subtitle: "Artist",
           type: "artist",
         }))}
+        path="artist"
         playMode="context"
       />
   )

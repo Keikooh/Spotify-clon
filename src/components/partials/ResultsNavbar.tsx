@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 function ResultsNavbar() {
@@ -10,8 +10,13 @@ function ResultsNavbar() {
     songs: `/home/search/${encodeURI(query)}/tracks`,
     playlists: `/home/search/${encodeURI(query)}/playlists`,
     artists: `/home/search/${encodeURI(query)}/artists`,
+    albums: `/home/search/${encodeURI(query)}/albums`,
     podcasts: `/home/search/${encodeURI(query)}/shows`,
   };
+
+  useEffect(() => {
+    setoption("all");
+  }, [query]);
 
   return (
     <nav className="z-10 sticky top-0 w-full flex gap-2 bg-gray-950 pb-4">

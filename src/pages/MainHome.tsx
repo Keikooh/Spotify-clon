@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import MainContent from "../components/MainContent";
-import Header from "../components/Header";
-import PlayerBar from "../components/PlayerBar/PlayerBar";
+import PlayerBar from "../components/partials/PlayerBar";
 import SideBar from "../components/SideBar/SideBar";
 
 import { getProfile } from "../services/SpotifyServices";
 import { useNavigate } from "react-router-dom";
+import MainNavbar from "../components/partials/MainNavbar";
 
 const MainHome = () => {
   const accessToken: string | null = localStorage.getItem("access_token");
@@ -33,7 +33,7 @@ const MainHome = () => {
 
   return (
     <div className="flex flex-col h-screen bg-black select-none">
-      {profile && <Header {...props} />}
+      {profile && <MainNavbar {...props} />}
       <main className="flex-1 overflow-hidden">
         <div className="flex h-full gap-3">
           {/* SideBar */}

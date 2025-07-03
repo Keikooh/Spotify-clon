@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { Player } from "../models/Player";
 
 export const usePlayerStore = create((set) => ({
   // state
@@ -8,16 +9,17 @@ export const usePlayerStore = create((set) => ({
     shuffleIsActive: false,
     repeatMode: "off",
     track: {
-      name: "no name",
-      artist: "no artist",
+      name: "",
+      artist: "",
       image: null,
       duration: 0,
       progress: 0,
     },
   },
+
   // actions
-  setPlayer: (partial) => {
-    set((state) => ({
+  setPlayer: (partial: Partial<Player>) => {
+    set((state: { player: Player }) => ({
       player: {
         ...state.player,
         ...partial,

@@ -32,7 +32,7 @@ const DurationBar = () => {
     setProgressFormat(formatTimeSeconds(progress));
     if (progress === duration) {
       setisFinished(true);
-      // Obtener status del payer y setear en el store la cancion
+      // Get Spotify Player status 
     }
   }, [progress]);
 

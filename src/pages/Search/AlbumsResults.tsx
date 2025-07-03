@@ -1,12 +1,12 @@
-import  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ResultSection from "../../components/ResultSection";
 import { useParams } from "react-router-dom";
 import { getSearchResult } from "../../services/SpotifyServices";
 
-const PodcastsResult = () => {
+const AlbumsResults = () => {
   const { query } = useParams();
   const accessToken = localStorage.getItem("access_token");
-  const [podcasts, setPodcasts] = useState([]);
+  const [albums, setAlbums] = useState([]);
   const [loading, setloading] = useState(true);
 
   const filterResult = (data) => {
@@ -15,10 +15,10 @@ const PodcastsResult = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getSearchResult(accessToken, query, "show");
+      const data = await getSearchResult(accessToken, query, "album");
       if (data) {
-        const { shows } = data;
-        setPodcasts(filterResult(shows.items));
+        const { albums } = data;
+        setAlbums(filterResult(albums.items));
         setloading(false);
       }
     };
@@ -27,21 +27,24 @@ const PodcastsResult = () => {
   }, [query]);
 
   if (loading) return <p>Cargando elementos...</p>;
+
   return (
     <ResultSection
       title=""
       wrap={true}
-      itemList={podcasts.map((podcast) => ({
-        id: podcast.id,
-        uri: podcast.uri,
-        image: podcast.images[0].url,
-        title: podcast.name,
-        subtitle: podcast.publisher,
-        type: "podcast",
+      itemList={albums.map((album) => ({
+        id: album.id,
+        uri: album.uri,
+        image: album.images[0]?.url,
+        title: album.name,
+        subtitle: `${album.release_date.slice(0, 4)} • ${
+          album.artists[0].name
+        }`,
+        type: "album",
       }))}
-      path="show"
+      playMode="context"
     />
   );
 };
 
-export default PodcastsResult;
+export default AlbumsResults;

@@ -13,10 +13,11 @@ type props = {
   title: string;
   wrap: boolean;
   itemList: data[];
+  path?: string;
   playMode?: "single" | "context";
 };
 
-const ResultSection: React.FC<props> = ({ title, wrap, itemList, playMode }) => {
+const ResultSection: React.FC<props> = ({ title, wrap, itemList, path, playMode }) => {
   return (
     itemList.length > 0 && (
       <section className="flex flex-col gap-y-2">
@@ -25,6 +26,7 @@ const ResultSection: React.FC<props> = ({ title, wrap, itemList, playMode }) => 
           {itemList.map((item) => (
             <CardItem
               data={item}
+              path={path}
               playMode={playMode}
               // track={}
             />

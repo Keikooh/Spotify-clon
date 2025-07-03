@@ -41,6 +41,7 @@ const PlaylistsResults = () => {
           subtitle: `By ${playlist.owner.display_name}`,
           type: "album",
         }))}
+        path="playlist"
         playMode="context"
       />
   )
