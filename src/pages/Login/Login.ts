@@ -10,6 +10,8 @@ const scope: string = [
   "user-modify-playback-state",
   "user-read-currently-playing",
   "user-top-read",
+  "playlist-modify-public",
+  "playlist-modify-private"
 ].join(" ");
 
 export const handleClick = async () => {

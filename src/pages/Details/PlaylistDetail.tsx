@@ -31,7 +31,7 @@ const PlaylistDetail = () => {
         type="playlist"
         uri={playlist.uri}
         headerData={{
-          image: playlist.images[0]?.url,
+          image:  playlist.images ? playlist.images[0]?.url : "" ,
           title: playlist.name,
           subtitle: "Public playlist",
           description: `${playlist.owner.display_name} ${playlist.tracks.items.length} songs`,
@@ -45,7 +45,7 @@ const PlaylistDetail = () => {
           albumName: item.track.album.name,
           addedAt: item.added_at,
         }))}
-        isOwner={true}
+        isEditable={true}
       />
     );
   } else {

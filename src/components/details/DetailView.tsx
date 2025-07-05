@@ -1,8 +1,10 @@
 import React from "react";
 import Table from "../tables/Table";
 import { LuPen } from "react-icons/lu";
+import { PiMusicNotesSimple } from "react-icons/pi";
 import PlayButton from "../Buttons/PlayButton";
 import ShuffleButton from "../Buttons/ShuffleButton";
+import DeleteButton from "../Buttons/DeleteButton";
 
 // Models
 import type { Track } from "../../models/Track";
@@ -17,14 +19,14 @@ type props = {
     description: string;
   };
   itemsList: Track[];
-  isOwner?: boolean;
+  isEditable?: boolean;
 };
 const DetailView: React.FC<props> = ({
   type,
   uri,
   headerData,
   itemsList,
-  isOwner,
+  isEditable,
 }) => {
   const { image, title, subtitle, description } = headerData;
 
@@ -34,12 +36,21 @@ const DetailView: React.FC<props> = ({
       {type !== "artist" && (
         <div className="flex gap-4">
           <div className="w-55 h-55 relative group">
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-full object-cover filter group-hover:brightness-50 transition"
-            />
-            {type === "playlist" && isOwner === true && (
+            <div className="w-full h-full group-hover:brightness-50 transition">
+              {image.length > 0 ? (
+                <img
+                  src={image}
+                  alt={title}
+                  className=" object-cover filter "
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-900 flex justify-center items-center ">
+                  <PiMusicNotesSimple className="size-20" />
+                </div>
+              )}
+            </div>
+
+            {type === "playlist" && isEditable === true && (
               <div className="hidden absolute inset-0 group-hover:flex flex-col  items-center  gap-y-2 justify-center font-semibold">
                 <LuPen className="text-2xl" />
                 <p className="text-xl">Choose photo</p>
@@ -75,11 +86,21 @@ const DetailView: React.FC<props> = ({
           playMode="context"
         />
         <ShuffleButton size="size-10" />
+        {
+          isEditable && (<DeleteButton/>)
+        }
       </div>
 
-      {type==="artist" && (<h4 className="font-bold text-2xl">Popular</h4>)}
+      {type === "artist" && <h4 className="font-bold text-2xl">Popular</h4>}
       {/* Table */}
-      <Table type={type} tracks={itemsList} />
+
+      {itemsList.length > 0 ? (
+        <Table type={type} tracks={itemsList} />
+      ) : (
+        <p className="text-center text-2xl opacity-70 font-semibold">
+          Add some music to your new playlist
+        </p>
+      )}
     </div>
   );
 };

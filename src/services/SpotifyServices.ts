@@ -1,3 +1,5 @@
+import type { Playlist } from "../models/Playlist";
+
 const API_BASE_URL = "https://api.spotify.com/v1";
 
 // User
@@ -16,8 +18,10 @@ export const getProfile = async (accessToken: string | null) => {
   }
 };
 
-export const getUsersTopItems = async (accessToken: string | null, type:string) => {
-
+export const getUsersTopItems = async (
+  accessToken: string | null,
+  type: string
+) => {
   try {
     const response = await fetch(`${API_BASE_URL}/me/top/${type}?limit=5`, {
       headers: {
@@ -188,8 +192,44 @@ export const setRepeatMode = async (
   }
 };
 
+export const createPlaylist = async (
+  accessToken: string | null,
+  userId: string,
+  playlist: Playlist
+) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/playlists`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(playlist),
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
 // Playlist
 
+export const unfollowPlaylist = async (
+  accessToken: string | null,
+  id: string
+) => {
+  try {
+    await fetch(`${API_BASE_URL}/playlists/${id}/followers`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+  } catch (error) {
+    console.error("Error getting profile: ", error);
+  }
+};
 export const fetchPlaylist = async (accessToken: string | null, id: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/playlists/${id}`, {
@@ -204,30 +244,59 @@ export const fetchPlaylist = async (accessToken: string | null, id: string) => {
   }
 };
 
+export const addCustomPlaylistCoverImage = async (
+  accessToken: string | null,
+  playlistId: string,
+  image: string
+) => {
+  try {
+    const body = {
+      image,
+    };
+
+    await fetch(`${API_BASE_URL}/playlists/${playlistId}/images`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // Search
-export const getSearchResult = async (accessToken: string | null, value: string, filters:string) => {
-    try {
-      const params = new URLSearchParams({
-        q: value,
-        type: filters,
-        limit: 20
-      }) 
-        
-      const response = await fetch(`https://api.spotify.com/v1/search?${params.toString()}`, {
+export const getSearchResult = async (
+  accessToken: string | null,
+  value: string,
+  filters: string
+) => {
+  try {
+    const params = new URLSearchParams({
+      q: value,
+      type: filters,
+      limit: 20,
+    });
+
+    const response = await fetch(
+      `https://api.spotify.com/v1/search?${params.toString()}`,
+      {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      });
-      const result = await response.json();
-      return result;
-      
-    } catch (error) {
-      console.error("Error getting track: ", error);
-    }
-  };
+      }
+    );
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error getting track: ", error);
+  }
+};
 
 // Artist
-export const getArtist = async (accessToken: string|null, id:string) => {
+export const getArtist = async (accessToken: string | null, id: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/artists/${id}`, {
       headers: {
@@ -239,9 +308,12 @@ export const getArtist = async (accessToken: string|null, id:string) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-export const getArtistsTopTracks = async (accessToken: string|null, id:string) => {
+export const getArtistsTopTracks = async (
+  accessToken: string | null,
+  id: string
+) => {
   try {
     const response = await fetch(`${API_BASE_URL}/artists/${id}/top-tracks`, {
       headers: {
@@ -253,12 +325,12 @@ export const getArtistsTopTracks = async (accessToken: string|null, id:string) =
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 // Album
 
-export const getAlbum = async (accessToken: string|null, id:string) => {
-    try {
+export const getAlbum = async (accessToken: string | null, id: string) => {
+  try {
     const response = await fetch(`${API_BASE_URL}/albums/${id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -269,4 +341,4 @@ export const getAlbum = async (accessToken: string|null, id:string) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
