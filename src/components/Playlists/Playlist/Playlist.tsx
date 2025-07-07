@@ -30,9 +30,9 @@ const Playlist = ({ data, style }) => {
           } size-14 rounded-sm group-hover:brightness-50`}
         >
           {images ? (
-            <img className="w-full h-full" src={images[0]?.url} alt={name} />
+            <img className="w-full h-full rounded-sm" src={images[0]?.url} alt={name} />
           ) : (
-            <div className="bg-gray-700 w-full h-full flex justify-center items-center">
+            <div className="bg-gray-700 w-full h-full flex justify-center items-center rounded-sm">
               <PiMusicNotesSimple className="size-5" />
             </div>
           )}

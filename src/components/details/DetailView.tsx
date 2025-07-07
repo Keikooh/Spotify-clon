@@ -41,10 +41,10 @@ const DetailView: React.FC<props> = ({
                 <img
                   src={image}
                   alt={title}
-                  className=" object-cover filter "
+                  className="w-full h-full object-cover filter shadox-xl rounded-sm"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-900 flex justify-center items-center ">
+                <div className="w-full h-full rounded-sm bg-gray-900 flex justify-center items-center ">
                   <PiMusicNotesSimple className="size-20" />
                 </div>
               )}
@@ -59,7 +59,7 @@ const DetailView: React.FC<props> = ({
           </div>
           <div className="flex flex-col justify-center gap-2">
             <span className="font-semibold">{subtitle}</span>
-            <h2 className="text-8xl font-bold">{title}</h2>
+            <h2 className={`font-bold ${title.length > 15 ? "text-7xl": "text-8xl"}`}>{title}</h2>
             <p className="font-semibold">{description}</p>
           </div>
         </div>
