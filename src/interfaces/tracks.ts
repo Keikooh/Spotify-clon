@@ -6,15 +6,17 @@ import type {
   LinkedFrom,
   Paging
 } from "./common";
-import type { Album, SimplifiedAlbum } from "./albums";
+import type { SimplifiedAlbum } from "./albums";
 
-export type Tracks = Paging<TrackInfo | Track | SimplifiedTrack>
+// New types
+export type AlbumTracks = Paging<SimplifiedTrack>
 
-export type DetailedTracks = Paging<TrackInfo>;
+export type PlaylistTracks = Paging<TrackDetails>
 
-export type SimplifiedTracks = Pick<Tracks, "href" | "total">;
+//
+export type Tracks = Paging<Track>
 
-export interface TrackInfo {
+export interface TrackDetails {
   added_at: string;
   added_by: Owner;
   is_local: boolean;
@@ -22,7 +24,7 @@ export interface TrackInfo {
 }
 
 export interface Track {
-  album: Album | SimplifiedAlbum;
+  album: SimplifiedAlbum;
   artists: Owner[];
   available_markets: string[];
   disc_number: number;

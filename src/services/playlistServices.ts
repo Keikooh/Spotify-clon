@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axiosInstance";
 
 // Interfaces
-import type { Playlist, Playlists } from "../interfaces";
+import type { Playlist, SimplifiedPlaylists } from "../interfaces";
 
 export const createPlaylist = async (
   accessToken: string,
@@ -45,8 +45,8 @@ export const getPlaylist = async (
 export const getUserPlaylists = async (
   accessToken: string,
   userId: string
-): Promise<Playlists> => {
-  const { data } = await axiosInstance.get<Playlists>(
+): Promise<SimplifiedPlaylists> => {
+  const { data } = await axiosInstance.get<SimplifiedPlaylists>(
     `users/${userId}/playlists`,
     {
       headers: {

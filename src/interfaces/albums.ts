@@ -7,9 +7,10 @@ import type {
   Copyright,
   Paging
 } from "./common";
-import type { Tracks } from "./tracks";
+import type { AlbumTracks } from "./tracks";
 
 export type Albums = Paging<Album>;
+export type SimplifiedAlbums = Paging<SimplifiedAlbum>;
 
 export interface Album {
   album_type: string;
@@ -26,15 +27,15 @@ export interface Album {
   type: string;
   uri: string;
   artists: Owner[];
-  tracks: Tracks;
+  tracks: AlbumTracks;
   copyrights: Copyright[];
   external_ids: ExternalIDS;
-  genres: any[];
+  genres: string[];
   label: string;
   popularity: number;
 }
 
 export type SimplifiedAlbum = Omit<
   Album,
-  "tracks" | "copyrighst" | "external_ids" | "genres" | "label" | "popularity"
+  "tracks" | "copyrights" | "external_ids" | "genres" | "label" | "popularity"
 >;

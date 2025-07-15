@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axiosInstance";
 
 // Interfaces
-import type { Album } from "../interfaces/albums";
+import type { Album } from "../interfaces";
 
 export const getAlbum = async (
   accessToken: string,

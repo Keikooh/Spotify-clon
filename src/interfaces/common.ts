@@ -9,14 +9,14 @@ export interface ExternalIDS {
 }
 
 export interface Followers {
-    href:  string;
+    href?:  string | null;
     total: number;
 }
 
 export interface Image {
     url:    string;
-    height: number;
-    width:  number;
+    height: number | null;
+    width:  number | null;
 }
 
 export interface Owner {
@@ -25,7 +25,7 @@ export interface Owner {
     id:            string;
     type:          string;
     uri:           string;
-    display_name:  string;
+    display_name?: string | null;
     name?:  string;
 }
 
