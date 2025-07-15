@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAlbum } from "../../services/SpotifyServices";
+import { getAlbum } from "../../services/albumServices";
 import DetailView from "../../components/details/DetailView";
 
 const AlbumDetail = () => {

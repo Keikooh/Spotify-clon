@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getProfile } from '../services/SpotifyServices';
+import { getUserProfile } from '../services/userServices';
 
 const Callback = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const Callback = () => {
 
       if (data.access_token) {
         localStorage.setItem('access_token', data.access_token);
-        const user = await getProfile(localStorage.getItem('access_token'));
+        const user = await getUserProfile(localStorage.getItem('access_token'));
 
         localStorage.setItem('user_id', user.id);
         navigate('/home');

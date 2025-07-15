@@ -1,4 +1,3 @@
-import { fetchDevices, playTrack } from "../../services/SpotifyServices";
 import { usePlayer } from "../../hooks/usePlayer";
 
 // icons
@@ -24,7 +23,7 @@ type Props = {
 const variantClasses = {
   floating:
     "text-gray-950 bg-green-500 p-3 rounded-full hover:bg-green-300 hover:scale-110 shadow-xl",
-  onImage: "hidden absolute w-full inset-0 group-hover:flex text-white",
+  onImage: "hidden absolute group-hover:flex text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
   row: "",
 };
 const PlayButton: React.FC<Props> = ({

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getArtist, getArtistsTopTracks } from "../../services/SpotifyServices";
 import { useParams } from "react-router-dom";
-import DetailView from "../../components/details/DetailView";
+import DetailView from "../../components/details/DetailView"
+import { getArtist, getArtistTopTrack } from "../../services/artistServices";
 import { formatNumber } from "../../utils/formats";
 
 const ArtistDetail = () => {
@@ -19,7 +19,7 @@ const ArtistDetail = () => {
   useEffect(() => {
     const fetchArtist = async () => {
       const data = await getArtist(accessToken, id);
-      const topTracks = await getArtistsTopTracks(accessToken, id);
+      const topTracks = await getArtistTopTrack(accessToken, id);
 
       if (data && topTracks) {
         setArtist({

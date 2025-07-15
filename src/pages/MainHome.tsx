@@ -3,7 +3,7 @@ import MainContent from "../components/MainContent";
 import PlayerBar from "../components/partials/PlayerBar";
 import SideBar from "../components/SideBar/SideBar";
 
-import { getProfile } from "../services/SpotifyServices";
+import { getUserProfile } from "../services/userServices";
 import { useNavigate } from "react-router-dom";
 import MainNavbar from "../components/partials/MainNavbar";
 
@@ -14,7 +14,7 @@ const MainHome = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const result = await getProfile(accessToken);
+      const result = await getUserProfile(accessToken);
 
       setProfile(result);
     };

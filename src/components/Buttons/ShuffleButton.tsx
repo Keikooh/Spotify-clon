@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ControlButton from "./ControlButton";
 import { usePlayerStore } from "../../app/store";
 import { TbArrowsShuffle } from "react-icons/tb";
-import { fetchDevices, setShuffleState } from "../../services/SpotifyServices";
+import { getAvailableDevices , togglePlaybackShuffle } from "../../services/playerServices";
 
 type props = {
     size?:string;
@@ -24,11 +24,11 @@ const ShuffleButton:React.FC<props> = ( { size }) => {
   const handleShuffle = async () => {
     const newShuffleState = !shuffleState;
     setPlayer({ shuffleIsActive: newShuffleState });
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices(accessToken);
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await setShuffleState(accessToken, deviceId, newShuffleState);
+      await togglePlaybackShuffle(accessToken, deviceId, newShuffleState);
     }
   };
 

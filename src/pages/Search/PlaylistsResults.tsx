@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ResultSection from '../../components/ResultSection';
 import { useParams } from 'react-router-dom';
-import { getSearchResult } from '../../services/SpotifyServices';
+import { searchForItem } from '../../services/searchServices';
 
 const PlaylistsResults = () => {
   const { query } = useParams();
@@ -15,7 +15,7 @@ const PlaylistsResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getSearchResult(accessToken, query, "playlist");
+      const data = await searchForItem(accessToken, query, "playlist");
       if(data){
         const { playlists } = data;
         setPlaylists(filterResult(playlists.items))

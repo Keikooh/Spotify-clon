@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { usePlayerStore } from "../../app/store";
 import ControlButton from "./ControlButton";
 import { LuRepeat } from "react-icons/lu";
-import { fetchDevices, setRepeatMode } from "../../services/SpotifyServices";
+import { getAvailableDevices, setRepeatMode } from "../../services/playerServices";
 import { LuRepeat1 } from "react-icons/lu";
 
 const RepeatButton = () => {
@@ -23,7 +23,7 @@ const RepeatButton = () => {
     const newRepeatMode = rotateRepeatMode(repeatMode);
     setPlayer({ repeatMode: newRepeatMode });
 
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices(accessToken);
 
     if (devices) {
       const deviceId = devices.devices[0].id;

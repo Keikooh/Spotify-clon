@@ -4,7 +4,7 @@ import PlayButton from "../Buttons/PlayButton";
 import { formatDate, formatTime } from "../../utils/formats";
 
 // Models
-import type { Track } from "../../models/Track";
+import type { Track } from "../../interfaces/Track";
 
 type props = {
   type: "artist" | "album" | "playlist" | "tracks";
@@ -43,16 +43,21 @@ const Table = ({ type, tracks }: props) => {
       <tbody>
         {tracks.map((item, index) => (
           <tr className="w-full group hover:bg-gray-800 transition duration-150 cursor-pointer">
-            <td scope="row" className="relative px-6 py-2">
-              {index + 1}
-              <PlayButton
-                uri={item.uri}
-                isArtist={type === "artist" ? true : false}
-                variant="onImage"
-                styles="group-hover:bg-gray-800"
-                playMode={type === "tracks" ? "single" : "context"}
-                offsetPosition={type === "tracks" ? 0 : index}
-              />
+            <td
+              scope="row"
+              className="relative px-6 py-2 text-center w-10"
+            >
+              <div className="relative flex justify-center items-center w-full h-full">
+                <span className="group-hover:hidden">{index + 1}</span>
+                <PlayButton
+                  uri={item.uri}
+                  isArtist={type === "artist"}
+                  variant="onImage"
+                  styles=""
+                  playMode={type === "tracks" ? "single" : "context"}
+                  offsetPosition={type === "tracks" ? 0 : index}
+                />
+              </div>
             </td>
             <td scope="row" className="px-6 py-2">
               <div className="flex gap-2 items-center min-w-0">
@@ -82,7 +87,7 @@ const Table = ({ type, tracks }: props) => {
               </td>
             )}
 
-            <td scope="row" className="px-6 py-2">
+            <td scope="row" className="px-6 py-2 w-20">
               {formatTime(item.duration)}
             </td>
           </tr>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 // services
-import { fetchPlaylist } from "../../services/SpotifyServices";
+import { getPlaylist } from "../../services/playlistServices";
 
 // icons
 import DetailView from "../../components/details/DetailView";
@@ -13,8 +13,8 @@ const PlaylistDetail = () => {
   const [playlist, setplaylist] = useState(null);
 
   useEffect(() => {
-    const getPlaylist = async (id) => {
-      const data = await fetchPlaylist(accessToken, id);
+    const fetchPlaylist = async (id) => {
+      const data = await getPlaylist(accessToken, id);
 
       if (data) {
         setplaylist(data);
@@ -22,7 +22,7 @@ const PlaylistDetail = () => {
       }
     };
 
-    getPlaylist(id);
+    fetchPlaylist(id);
   }, [id, accessToken]);
 
   if (playlist) {

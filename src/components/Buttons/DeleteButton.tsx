@@ -1,7 +1,7 @@
 import React from 'react'
 import ControlButton from './ControlButton';
 import { FaTrashAlt } from "react-icons/fa";
-import { unfollowPlaylist } from '../../services/SpotifyServices';
+import { unfollowPlaylist } from '../../services/userServices';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const DeleteButton = () => {

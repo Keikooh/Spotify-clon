@@ -7,7 +7,7 @@ import ResultsNavbar from "../../components/partials/ResultsNavbar";
 
 const SearchResults = () => {
   return (
-    <div className=" h-full overflow-y-auto">
+    <div className=" h-full overflow-y-auto scroll">
       <ResultsNavbar />
       <Outlet />
     </div>

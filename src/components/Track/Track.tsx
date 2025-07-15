@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { fetchDevices, playTrack } from "../../services/SpotifyServices";
 
 import { formatTime } from "../../utils/formats";
 

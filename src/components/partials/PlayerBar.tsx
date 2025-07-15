@@ -11,14 +11,11 @@ import { LuRepeat } from "react-icons/lu";
 import { usePlayerStore } from "../../app/store";
 
 import {
-  fetchDevices,
-  fetchPlayState,
-  getRecentlyPlayedTracks,
+  getAvailableDevices,
+  getPlaybackState,
   setPlaybackVolume,
-  goTo,
-  setShuffleState,
-  setRepeatMode,
-} from "../../services/SpotifyServices";
+  skipTo
+} from "../../services/playerServices";
 import ControlButton from "../Buttons/ControlButton";
 import ShuffleButton from "../Buttons/ShuffleButton";
 import RepeatButton from "../Buttons/RepeatButton";
@@ -50,28 +47,28 @@ export const PlayerBar = () => {
     setPlayer({repeatMode: changeRepeatMode()});
     console.warn(repeatMode);
 
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices(accessToken);
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await goTo(accessToken, deviceId, "next");
+      await skipTo(accessToken, deviceId, "next");
     }
   };
 
   const handlePrevious = async () => {
     setPlayer({repeatMode: changeRepeatMode()});
     
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices(accessToken);
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await goTo(accessToken, deviceId, "previous");
+      await skipTo(accessToken, deviceId, "previous");
     }
   };
 
   useEffect(() => {
     const getPlayState = async () => {
-      const data = await fetchPlayState(accessToken);
+      const data = await getPlaybackState(accessToken);
 
       if (data) {
         const isPlaying = data.is_playing;
@@ -109,7 +106,7 @@ export const PlayerBar = () => {
 
   const handleChange = async (event) => {
     const volumePercent = event.target.value;
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices(accessToken);
 
     if (devices) {
       const deviceId = devices.devices[0].id;

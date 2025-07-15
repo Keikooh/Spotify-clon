@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Player } from "../models/Player";
+import type { Player } from "../interfaces/devices";
 
 export const usePlayerStore = create((set) => ({
   // state
