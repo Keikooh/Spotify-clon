@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 
 const ArtistsResults = () => {
   const { query } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [artists, setartists] = useState([]);
   const [loading, setloading] = useState(true);
 
@@ -15,7 +14,7 @@ const ArtistsResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await searchForItem(accessToken, query, "artist");
+      const data = await searchForItem(query, "artist");
       if(data){
         const { artists } = data;
         setartists(filterResult(artists.items))

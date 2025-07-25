@@ -11,8 +11,6 @@ const RepeatButton = () => {
 
   const { repeatMode } = playerState;
 
-  const accessToken = localStorage.getItem("access_token");
-
   const rotateRepeatMode = (currentMode: "context" | "track" | "off") => {
     if (currentMode === "off") return "context";
     if (currentMode === "context") return "track";
@@ -23,11 +21,11 @@ const RepeatButton = () => {
     const newRepeatMode = rotateRepeatMode(repeatMode);
     setPlayer({ repeatMode: newRepeatMode });
 
-    const devices = await getAvailableDevices(accessToken);
+    const devices = await getAvailableDevices();
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await setRepeatMode(accessToken, deviceId, newRepeatMode);
+      await setRepeatMode(deviceId, newRepeatMode);
     }
   };
   return (

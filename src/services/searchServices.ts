@@ -4,7 +4,6 @@ import { axiosInstance } from "./axiosInstance";
 import type { SearchResults } from "../interfaces";
 
 export const searchForItem = async (
-  accessToken: string,
   q: string,
   type: string
 ): Promise<SearchResults> => {
@@ -13,9 +12,6 @@ export const searchForItem = async (
       q: q,
       type: type,
       limit: 20,
-    },
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
     },
   });
 

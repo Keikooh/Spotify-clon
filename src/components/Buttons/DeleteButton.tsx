@@ -7,9 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 const DeleteButton = () => {
   const { id } = useParams();
   const navigate = useNavigate()
-  const accessToken = localStorage.getItem("access_token");
   const handleDelete = async () => {
-    await unfollowPlaylist(accessToken, id);
+    await unfollowPlaylist(id);
 
     navigate("/home")
   }

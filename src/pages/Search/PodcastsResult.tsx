@@ -5,7 +5,6 @@ import { searchForItem } from "../../services/searchServices";
 
 const PodcastsResult = () => {
   const { query } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [podcasts, setPodcasts] = useState([]);
   const [loading, setloading] = useState(true);
 
@@ -15,7 +14,7 @@ const PodcastsResult = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await searchForItem(accessToken, query, "show");
+      const data = await searchForItem(query, "show");
       if (data) {
         const { shows } = data;
         setPodcasts(filterResult(shows.items));

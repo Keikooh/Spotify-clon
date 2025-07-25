@@ -3,20 +3,13 @@ import { axiosInstance } from "./axiosInstance";
 // Interfaces
 import type { Devices, PlaybackState } from "../interfaces";
 
-export const getAvailableDevices = async (
-  accessToken: string
-): Promise<Devices> => {
-  const { data } = await axiosInstance.get<Devices>("me/player/devices", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const getAvailableDevices = async (): Promise<Devices> => {
+  const { data } = await axiosInstance.get<Devices>("me/player/devices");
 
   return data;
 };
 
 export const playTrack = async (
-  accessToken: string,
   trackUri: string,
   deviceId: string,
   playMode: string,
@@ -31,27 +24,16 @@ export const playTrack = async (
     position_ms: 0,
   };
 
-  await axiosInstance.put(`me/player/play?device_id?=${deviceId}`, data, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  await axiosInstance.put(`me/player/play?device_id?=${deviceId}`, data);
 };
 
-export const getPlaybackState = async (
-  accessToken: string
-): Promise<PlaybackState> => {
-  const { data } = await axiosInstance.get<PlaybackState>("me/player", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const getPlaybackState = async (): Promise<PlaybackState> => {
+  const { data } = await axiosInstance.get<PlaybackState>("me/player");
 
   return data;
 };
 
 export const setPlaybackVolume = async (
-  accessToken: string,
   volumePercent: number,
   deviceId: string
 ): Promise<void> => {
@@ -60,14 +42,10 @@ export const setPlaybackVolume = async (
       volume_percent: volumePercent,
       device_id: deviceId,
     },
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 };
 
 export const skipTo = async (
-  accessToken: string,
   deviceId: string,
   direction: "previous" | "next"
 ): Promise<void> => {
@@ -75,14 +53,10 @@ export const skipTo = async (
     params: {
       device_id: deviceId,
     },
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 };
 
 export const togglePlaybackShuffle = async (
-  accessToken: string,
   deviceId: string,
   state: boolean
 ): Promise<void> => {
@@ -91,14 +65,10 @@ export const togglePlaybackShuffle = async (
       device_id: deviceId,
       state: state,
     },
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 };
 
 export const setRepeatMode = async (
-  accessToken: string,
   deviceId: string,
   state: "context" | "track" | "off"
 ): Promise<void> => {
@@ -106,9 +76,6 @@ export const setRepeatMode = async (
     params: {
       device_id: deviceId,
       state: state,
-    },
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
     },
   });
 };

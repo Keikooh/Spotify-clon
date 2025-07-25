@@ -5,7 +5,6 @@ import { getUserTopItems } from "../services/userServices";
 import { getUserPlaylists } from "../services/playlistServices";
 
 const Home = () => {
-  const accessToken = localStorage.getItem("access_token");
   const userId = localStorage.getItem("user_id");
   const [playlists, setplaylists] = useState([]);
   const [topArtists, settopArtists] = useState([]);
@@ -13,15 +12,15 @@ const Home = () => {
 
   useEffect(() => {
     const fetchUserPlaylists = async () => {
-      const data = await getUserPlaylists(accessToken, userId);
+      const data = await getUserPlaylists(userId);
       if (data) {
         setplaylists(data.items);
       }
     };
 
     const getTopItems = async () => {
-      const artists = await getUserTopItems(accessToken, "artists");
-      const tracks = await getUserTopItems(accessToken, "tracks");
+      const artists = await getUserTopItems("artists");
+      const tracks = await getUserTopItems("tracks");
 
       if (artists) {
         settopArtists(artists.items);

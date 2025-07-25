@@ -5,7 +5,6 @@ import { searchForItem } from '../../services/searchServices';
 
 const PlaylistsResults = () => {
   const { query } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [playlists, setPlaylists] = useState([]);
   const [loading, setloading] = useState(true);
 
@@ -15,7 +14,7 @@ const PlaylistsResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await searchForItem(accessToken, query, "playlist");
+      const data = await searchForItem(query, "playlist");
       if(data){
         const { playlists } = data;
         setPlaylists(filterResult(playlists.items))

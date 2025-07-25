@@ -17,7 +17,6 @@ type props = {
 };
 
 export const usePlayer = () => {
-  const accessToken = localStorage.getItem("access_token");
   const setPlayer = usePlayerStore((state) => state.setPlayer);
 
   const play = async ({
@@ -27,12 +26,11 @@ export const usePlayer = () => {
     track,
     offsetPosition,
   }: props) => {
-    const result = await getAvailableDevices(accessToken);
+    const result = await getAvailableDevices();
 
     if (result) {
       const deviceId = result.devices[0].id;
       await playTrack(
-        accessToken, 
         uri,
         deviceId,
         playMode,
@@ -65,7 +63,7 @@ export const usePlayer = () => {
         });
       } else {
         setTimeout(async () => {
-          const data = await getPlaybackState(accessToken);
+          const data = await getPlaybackState();
 
           const currentPlayer = {
             track: {

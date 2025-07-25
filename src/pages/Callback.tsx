@@ -33,7 +33,7 @@ const Callback = () => {
 
       if (data.access_token) {
         localStorage.setItem('access_token', data.access_token);
-        const user = await getUserProfile(localStorage.getItem('access_token'));
+        const user = await getUserProfile();
 
         localStorage.setItem('user_id', user.id);
         navigate('/home');

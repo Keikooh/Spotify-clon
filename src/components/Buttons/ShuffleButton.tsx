@@ -17,18 +17,17 @@ const ShuffleButton:React.FC<props> = ( { size }) => {
   
   const shuffleState = shuffleIsActive;
 
-  const accessToken = localStorage.getItem("access_token");
   const isEnabled = playMode === "single" ? false : true;
 
   // handles
   const handleShuffle = async () => {
     const newShuffleState = !shuffleState;
     setPlayer({ shuffleIsActive: newShuffleState });
-    const devices = await getAvailableDevices(accessToken);
+    const devices = await getAvailableDevices();
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await togglePlaybackShuffle(accessToken, deviceId, newShuffleState);
+      await togglePlaybackShuffle(deviceId, newShuffleState);
     }
   };
 

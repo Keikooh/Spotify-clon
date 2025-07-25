@@ -8,12 +8,11 @@ import { createPlaylist, getUserPlaylists } from "../../services/playlistService
 const SideBar = () => {
   const [playlists, setPlaylists] = useState([]);
   const [itemAdded, setitemAdded] = useState(false);
-  const accessToken = localStorage.getItem("access_token");
   const userId = localStorage.getItem("user_id");
   const navigate = useNavigate();
 
   const handleClick = async () => {
-    const data = await createPlaylist(accessToken, userId, "NewPlaylist", true, false, "" );
+    const data = await createPlaylist(userId, "NewPlaylist", true, false, "" );
 
     if(data ){
       setitemAdded(true);
@@ -23,11 +22,10 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    if (!userId || !accessToken) return;
 
     const getUsersPlaylists = async () => {
       try {
-        const data = await getUserPlaylists( accessToken, userId,);
+        const data = await getUserPlaylists(userId);
 
         if (data && data.items) {
           setPlaylists(data.items);

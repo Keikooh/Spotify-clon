@@ -5,7 +5,6 @@ import { searchForItem } from "../../services/searchServices";
 
 const AlbumsResults = () => {
   const { query } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [albums, setAlbums] = useState([]);
   const [loading, setloading] = useState(true);
 
@@ -15,7 +14,7 @@ const AlbumsResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await searchForItem(accessToken, query, "album");
+      const data = await searchForItem(query, "album");
       if (data) {
         const { albums } = data;
         setAlbums(filterResult(albums.items));

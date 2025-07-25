@@ -6,7 +6,6 @@ import type { Track } from "../../interfaces/Track";
 
 const TracksResults = () => {
   const { query } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setloading] = useState(true);
 
@@ -16,7 +15,7 @@ const TracksResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await searchForItem(accessToken, query, "track");
+      const data = await searchForItem(query, "track");
       if(data){
         const { tracks } = data;
         setTracks(filterResult(tracks.items))

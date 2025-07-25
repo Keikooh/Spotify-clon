@@ -5,7 +5,6 @@ import DetailView from "../../components/details/DetailView";
 
 const AlbumDetail = () => {
   const { id } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState({
     name: "",
@@ -17,7 +16,7 @@ const AlbumDetail = () => {
 
   useEffect(() => {
     const getPlaylist = async () => {
-      const data = await getAlbum(accessToken, id);
+      const data = await getAlbum(id);
 
       if (data) {
         setAlbum({
@@ -39,7 +38,7 @@ const AlbumDetail = () => {
     };
 
     getPlaylist();
-  }, [id, accessToken]);
+  }, [id]);
 
   if (loading) return <p>Cargando...</p>;
 
