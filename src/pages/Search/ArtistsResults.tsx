@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ResultSection from '../../components/ResultSection'
-import { getSearchResult } from '../../services/SpotifyServices';
+import { searchForItem } from '../../services/searchServices';
 import { useParams } from 'react-router-dom';
 
 const ArtistsResults = () => {
   const { query } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [artists, setartists] = useState([]);
   const [loading, setloading] = useState(true);
 
@@ -15,7 +14,7 @@ const ArtistsResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getSearchResult(accessToken, query, "artist");
+      const data = await searchForItem(query, "artist");
       if(data){
         const { artists } = data;
         setartists(filterResult(artists.items))

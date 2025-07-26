@@ -1,7 +1,7 @@
 import ResultSection from "../../components/ResultSection";
 import PlayButton from "../../components/Buttons/PlayButton";
 import { useEffect, useState } from "react";
-import { getSearchResult } from "../../services/SpotifyServices";
+import { searchForItem } from "../../services/searchServices";
 import { useParams } from "react-router-dom";
 import Track from "../../components/Track/Track";
 
@@ -11,7 +11,6 @@ const filterResult = (data) => {
 
 const AllResults = () => {
   const { query } = useParams();
-  const accessToken: string | null = localStorage.getItem("access_token");
   const [filtered, setfiltered] = useState({
     tracks: [],
     artists: [],
@@ -23,7 +22,7 @@ const AllResults = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getSearchResult(accessToken, query, "album,track,playlist,artist,show");
+      const data = await searchForItem(query, "album,track,playlist,artist,show");
 
       if (data) {
         const { tracks, artists, playlists, albums, shows: podcasts } = data;

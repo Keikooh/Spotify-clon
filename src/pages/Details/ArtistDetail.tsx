@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getArtist, getArtistsTopTracks } from "../../services/SpotifyServices";
 import { useParams } from "react-router-dom";
-import DetailView from "../../components/details/DetailView";
+import DetailView from "../../components/details/DetailView"
+import { getArtist, getArtistTopTrack } from "../../services/artistServices";
 import { formatNumber } from "../../utils/formats";
 
 const ArtistDetail = () => {
   const { id } = useParams();
-  const accessToken = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
   const [artist, setArtist] = useState({
     name: "",
@@ -18,8 +17,8 @@ const ArtistDetail = () => {
 
   useEffect(() => {
     const fetchArtist = async () => {
-      const data = await getArtist(accessToken, id);
-      const topTracks = await getArtistsTopTracks(accessToken, id);
+      const data = await getArtist(id);
+      const topTracks = await getArtistTopTrack(id);
 
       if (data && topTracks) {
         setArtist({
@@ -42,7 +41,7 @@ const ArtistDetail = () => {
     };
 
     fetchArtist();
-  }, [id, accessToken]);
+  }, [id]);
 
   if (loading) return <p>Cargando...</p>;
 

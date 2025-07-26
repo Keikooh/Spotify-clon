@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
-import { fetchUserPlaylists } from "./SideBar.service";
 import Playlists from "../Playlists/Playlists";
 import { TbWaveSine } from "react-icons/tb";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { createPlaylist } from "../../services/SpotifyServices";
+import { createPlaylist, getUserPlaylists } from "../../services/playlistServices";
 
 const SideBar = () => {
   const [playlists, setPlaylists] = useState([]);
   const [itemAdded, setitemAdded] = useState(false);
-  const accessToken = localStorage.getItem("access_token");
   const userId = localStorage.getItem("user_id");
   const navigate = useNavigate();
 
   const handleClick = async () => {
-    const data = await createPlaylist(accessToken, userId, {
-      name: "New playlist",
-      description: "",
-      public: true,
-    });
+    const data = await createPlaylist(userId, "NewPlaylist", true, false, "" );
 
     if(data ){
       setitemAdded(true);
@@ -28,21 +22,21 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    if (!userId || !accessToken) return;
 
-    const getUserPlaylists = async () => {
+    const getUsersPlaylists = async () => {
       try {
-        const data = await fetchUserPlaylists(userId, accessToken);
+        const data = await getUserPlaylists(userId);
 
         if (data && data.items) {
           setPlaylists(data.items);
+          console.log({data: data.items[0].name})
         }
       } catch (error) {
         console.error("Error fetching playlists:", error);
       }
     };
 
-    getUserPlaylists();
+    getUsersPlaylists();
   }, [itemAdded]);
 
   return (

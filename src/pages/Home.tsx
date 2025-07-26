@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 import ResultSection from "../components/ResultSection";
-import { fetchUserPlaylists } from "../components/SideBar/SideBar.service";
 import Playlists from "../components/Playlists/Playlists";
-import { getUsersTopItems } from "../services/SpotifyServices";
+import { getUserTopItems } from "../services/userServices";
+import { getUserPlaylists } from "../services/playlistServices";
 
 const Home = () => {
-  const accessToken = localStorage.getItem("access_token");
   const userId = localStorage.getItem("user_id");
   const [playlists, setplaylists] = useState([]);
   const [topArtists, settopArtists] = useState([]);
   const [topTracks, settopTracks] = useState([]);
 
   useEffect(() => {
-    const getUserPlaylists = async () => {
-      const data = await fetchUserPlaylists(userId, accessToken);
+    const fetchUserPlaylists = async () => {
+      const data = await getUserPlaylists(userId);
       if (data) {
         setplaylists(data.items);
       }
     };
 
     const getTopItems = async () => {
-      const artists = await getUsersTopItems(accessToken, "artists");
-      const tracks = await getUsersTopItems(accessToken, "tracks");
+      const artists = await getUserTopItems("artists");
+      const tracks = await getUserTopItems("tracks");
 
       if (artists) {
         settopArtists(artists.items);
@@ -30,7 +29,7 @@ const Home = () => {
     };
 
     getTopItems();
-    getUserPlaylists();
+    fetchUserPlaylists();
   }, []);
 
   return (

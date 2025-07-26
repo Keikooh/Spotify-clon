@@ -1,11 +1,12 @@
 import { usePlayerStore } from "../app/store";
 import {
-  fetchDevices,
-  fetchPlayState,
+  getAvailableDevices,
+  getPlaybackState,
   playTrack,
-} from "../services/SpotifyServices";
+} from "../services/playerServices"
 
-import type { Track } from "../models/Track";
+import type { Track } from "../interfaces/Track";
+
 
 type props = {
   uri: string;
@@ -16,7 +17,6 @@ type props = {
 };
 
 export const usePlayer = () => {
-  const accessToken = localStorage.getItem("access_token");
   const setPlayer = usePlayerStore((state) => state.setPlayer);
 
   const play = async ({
@@ -26,14 +26,13 @@ export const usePlayer = () => {
     track,
     offsetPosition,
   }: props) => {
-    const result = await fetchDevices(accessToken);
+    const result = await getAvailableDevices();
 
     if (result) {
       const deviceId = result.devices[0].id;
       await playTrack(
         uri,
         deviceId,
-        accessToken,
         playMode,
         isArtist,
         offsetPosition
@@ -64,7 +63,7 @@ export const usePlayer = () => {
         });
       } else {
         setTimeout(async () => {
-          const data = await fetchPlayState(accessToken);
+          const data = await getPlaybackState();
 
           const currentPlayer = {
             track: {

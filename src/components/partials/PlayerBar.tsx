@@ -11,20 +11,16 @@ import { LuRepeat } from "react-icons/lu";
 import { usePlayerStore } from "../../app/store";
 
 import {
-  fetchDevices,
-  fetchPlayState,
-  getRecentlyPlayedTracks,
+  getAvailableDevices,
+  getPlaybackState,
   setPlaybackVolume,
-  goTo,
-  setShuffleState,
-  setRepeatMode,
-} from "../../services/SpotifyServices";
+  skipTo
+} from "../../services/playerServices";
 import ControlButton from "../Buttons/ControlButton";
 import ShuffleButton from "../Buttons/ShuffleButton";
 import RepeatButton from "../Buttons/RepeatButton";
 
 export const PlayerBar = () => {
-  const accessToken = localStorage.getItem("access_token");
   // Store
   const playerState = usePlayerStore((state) => state.player);
   const setPlayer = usePlayerStore((state) => state.setPlayer);
@@ -50,28 +46,28 @@ export const PlayerBar = () => {
     setPlayer({repeatMode: changeRepeatMode()});
     console.warn(repeatMode);
 
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices();
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await goTo(accessToken, deviceId, "next");
+      await skipTo(deviceId, "next");
     }
   };
 
   const handlePrevious = async () => {
     setPlayer({repeatMode: changeRepeatMode()});
     
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices();
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await goTo(accessToken, deviceId, "previous");
+      await skipTo(deviceId, "previous");
     }
   };
 
   useEffect(() => {
     const getPlayState = async () => {
-      const data = await fetchPlayState(accessToken);
+      const data = await getPlaybackState();
 
       if (data) {
         const isPlaying = data.is_playing;
@@ -109,11 +105,11 @@ export const PlayerBar = () => {
 
   const handleChange = async (event) => {
     const volumePercent = event.target.value;
-    const devices = await fetchDevices(accessToken);
+    const devices = await getAvailableDevices();
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await setPlaybackVolume(accessToken, volumePercent, deviceId);
+      await setPlaybackVolume( volumePercent, deviceId);
     }
   };
 

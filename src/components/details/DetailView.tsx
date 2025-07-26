@@ -1,13 +1,11 @@
-import React from "react";
 import Table from "../tables/Table";
 import { LuPen } from "react-icons/lu";
 import { PiMusicNotesSimple } from "react-icons/pi";
 import PlayButton from "../Buttons/PlayButton";
 import ShuffleButton from "../Buttons/ShuffleButton";
 import DeleteButton from "../Buttons/DeleteButton";
-
 // Models
-import type { Track } from "../../models/Track";
+import type { Track } from "../../interfaces/Track";
 
 type props = {
   type: "album" | "playlist" | "artist";
@@ -21,20 +19,20 @@ type props = {
   itemsList: Track[];
   isEditable?: boolean;
 };
-const DetailView: React.FC<props> = ({
+const DetailView = ({
   type,
   uri,
   headerData,
   itemsList,
   isEditable,
-}) => {
+}: props) => {
   const { image, title, subtitle, description } = headerData;
 
   return (
-    <div className="flex flex-col gap-y-4 h-full overflow-y-auto">
+    <div className="flex flex-col gap-y-4 h-full scroll overflow-y-auto">
       {/* header */}
       {type !== "artist" && (
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-end">
           <div className="w-55 h-55 relative group">
             <div className="w-full h-full group-hover:brightness-50 transition">
               {image.length > 0 ? (
@@ -57,9 +55,15 @@ const DetailView: React.FC<props> = ({
               </div>
             )}
           </div>
-          <div className="flex flex-col justify-center gap-2">
+          <div className="flex flex-col justify-center gap-y-4">
             <span className="font-semibold">{subtitle}</span>
-            <h2 className={`font-bold ${title.length > 15 ? "text-7xl": "text-8xl"}`}>{title}</h2>
+            <h2
+              className={`font-bold ${
+                title.length > 15 ? "text-7xl" : "text-8xl"
+              }`}
+            >
+              {title}
+            </h2>
             <p className="font-semibold">{description}</p>
           </div>
         </div>
@@ -86,9 +90,7 @@ const DetailView: React.FC<props> = ({
           playMode="context"
         />
         <ShuffleButton size="size-10" />
-        {
-          isEditable && (<DeleteButton/>)
-        }
+        {isEditable && <DeleteButton />}
       </div>
 
       {type === "artist" && <h4 className="font-bold text-2xl">Popular</h4>}

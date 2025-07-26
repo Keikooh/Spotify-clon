@@ -1,16 +1,23 @@
-export const generateCodeVerifier = () => {
-    const array = new Uint32Array( 52 / 2 );
-    window.crypto.getRandomValues( array );
-    return Array.from( array, dec => ( '0' + dec.toString(16)).slice( -2 )).join('');
+export const generateCodeVerifier = (length:number) => {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const values = crypto.getRandomValues(new Uint8Array(length));
+  return values.reduce((acc, x) => acc + possible[x % possible.length], "");
+}
+
+const sha256 = async (plain:string):Promise<ArrayBuffer> => {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(plain)
+  return window.crypto.subtle.digest('SHA-256', data)
+}
+
+const base64encode = (input:ArrayBuffer) => {
+  return btoa(String.fromCharCode(...new Uint8Array(input)))
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
 }
 
 export async function generateCodeChallenge(codeVerifier: string) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(codeVerifier);
-  const digest = await window.crypto.subtle.digest('SHA-256', data);
-  const base64digest = btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-  return base64digest;
+  const hashed = await sha256(codeVerifier);
+  return base64encode(hashed)
 }
