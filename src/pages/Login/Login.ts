@@ -15,7 +15,7 @@ const scope: string = [
 ].join(" ");
 
 export const handleClick = async () => {
-  const verifier = generateCodeVerifier();
+  const verifier = generateCodeVerifier(64);
   localStorage.setItem("code_verifier", verifier);
   const challenge = await generateCodeChallenge(verifier);
 
