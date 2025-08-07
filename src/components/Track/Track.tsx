@@ -4,7 +4,10 @@ import { formatTime } from "../../utils/formats";
 
 // icons
 import { SlOptions } from "react-icons/sl";
-import PlayButton from "../Buttons/PlayButton";
+import PlayButton from "@components/buttons/PlayButton";
+import type { PlayButtonProps } from "@shared/types/buttonTypes";
+import { buttonPlayVariants } from "@shared/styles/buttonStyles";
+import { MediaItems, PlayModes } from "@shared/types/common";
 
 const Track = ({ data }) => {
   const { album, artists, name, uri, duration_ms } = data;
@@ -19,9 +22,20 @@ const Track = ({ data }) => {
     name,
     duration,
     progress: 0,
-    isPlaying: true
-  }
-  
+    isPlaying: true,
+  };
+
+  const button: PlayButtonProps = {
+    buttonStyle: buttonPlayVariants.HiddenTransparent,
+    settings: {
+      uri,
+      playMode: PlayModes.Single,
+      mediaItem: MediaItems.Track,
+      progress: 0,
+      isPlaying: true,
+    },
+  };
+
   return (
     <li className="flex justify-between items-center rounded-lg p-2 hover:bg-gray-900 transition duration-150">
       <div className=" flex gap-2 w-full">
@@ -31,13 +45,7 @@ const Track = ({ data }) => {
             src={image}
             alt={name}
           />
-          <PlayButton
-            uri={uri}
-            isArtist={false}
-            playMode="single"
-            variant="onImage"
-            track={track}
-          />
+          <PlayButton {...button} />
         </div>
 
         <div className="flex flex-col justify-center">

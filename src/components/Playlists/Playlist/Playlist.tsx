@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import PlayButton from "../../Buttons/PlayButton";
+import PlayButton from "@components/buttons/PlayButton";
 import { PiMusicNotesSimple } from "react-icons/pi";
+import type { PlayButtonProps } from "@shared/types/buttonTypes";
+import { MediaItems, PlayModes } from "@shared/types/common";
+import { buttonPlayVariants } from "@shared/styles/buttonStyles";
 
 const Playlist = ({ data, style }) => {
   const { name, images, owner, id, uri } = data;
@@ -16,6 +19,22 @@ const Playlist = ({ data, style }) => {
   };
 
   const isHorizontal = style === "horizontal" ? true : false;
+
+  const buttonStyle = isHorizontal
+    ? `${buttonPlayVariants.HiddenFilledGreen} bottom-1/5 right-2`
+    : buttonPlayVariants.HiddenTransparent;
+
+  const button: PlayButtonProps = {
+    buttonStyle,
+    settings: {
+      uri: uri,
+      offSetPosition: 0,
+      playMode: PlayModes.Context, //
+      mediaItem: MediaItems.Playlist,
+      progress: 0,
+      isPlaying: true,
+    },
+  };
   return (
     <li
       className={`${variantClasses[style]} ${
@@ -30,7 +49,11 @@ const Playlist = ({ data, style }) => {
           } size-14 rounded-sm group-hover:brightness-50`}
         >
           {images ? (
-            <img className="w-full h-full rounded-sm" src={images[0]?.url} alt={name} />
+            <img
+              className="w-full h-full rounded-sm"
+              src={images[0]?.url}
+              alt={name}
+            />
           ) : (
             <div className="bg-gray-700 w-full h-full flex justify-center items-center rounded-sm">
               <PiMusicNotesSimple className="size-5" />
@@ -38,14 +61,7 @@ const Playlist = ({ data, style }) => {
           )}
         </div>
 
-        {style === "vertical" && (
-          <PlayButton
-            uri={uri}
-            playMode="context"
-            isArtist={false}
-            variant="onImage"
-          />
-        )}
+        {style === "vertical" && <PlayButton {...button} />}
       </div>
       <div className="flex flex-col justify-center">
         <p className="font-semibold">{name}</p>
@@ -54,15 +70,7 @@ const Playlist = ({ data, style }) => {
         )}
       </div>
 
-      {isHorizontal && (
-        <PlayButton
-          uri={uri}
-          playMode="context"
-          isArtist={false}
-          variant="floating"
-          styles="size-12 hidden absolute bottom-1/5 right-2 group-hover:flex"
-        />
-      )}
+      {isHorizontal && <PlayButton {...button} />}
     </li>
   );
 };

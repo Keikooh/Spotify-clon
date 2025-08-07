@@ -1,17 +1,27 @@
 import React, { useEffect } from "react";
 import { IoTimeOutline } from "react-icons/io5";
-import PlayButton from "../Buttons/PlayButton";
+import PlayButton from "@components/buttons/PlayButton";
 import { formatDate, formatTime } from "../../utils/formats";
 
 // Models
 import type { Track } from "../../interfaces/Track";
+import { PlayModes } from "@shared/types/common";
+import { buttonPlayVariants } from "@shared/styles/buttonStyles";
+
 
 type props = {
   type: "artist" | "album" | "playlist" | "tracks";
   tracks: Track[];
 };
 
+
+
+
 const Table = ({ type, tracks }: props) => {
+
+  useEffect(() => {
+  console.log(type)
+}, [])
   return (
     <table className="table-fixed w-full text-left rtl:text-right">
       {type !== "artist" && (
@@ -43,19 +53,19 @@ const Table = ({ type, tracks }: props) => {
       <tbody>
         {tracks.map((item, index) => (
           <tr className="w-full group hover:bg-gray-800 transition duration-150 cursor-pointer">
-            <td
-              scope="row"
-              className="relative px-6 py-2 text-center w-10"
-            >
+            <td scope="row" className="relative px-6 py-2 text-center w-10">
               <div className="relative flex justify-center items-center w-full h-full">
                 <span className="group-hover:hidden">{index + 1}</span>
                 <PlayButton
-                  uri={item.uri}
-                  isArtist={type === "artist"}
-                  variant="onImage"
-                  styles=""
-                  playMode={type === "tracks" ? "single" : "context"}
-                  offsetPosition={type === "tracks" ? 0 : index}
+                  buttonStyle={buttonPlayVariants.HiddenTransparent}
+                  settings={{
+                    uri: item.uri,
+                    playMode: type === "tracks" ? PlayModes.Single : PlayModes.Context,
+                    mediaItem: type,
+                    offSetPosition: type === "tracks" ? 0 : index,
+                    progress: 0,
+                    isPlaying: true,
+                  }}
                 />
               </div>
             </td>

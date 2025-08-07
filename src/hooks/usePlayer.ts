@@ -3,83 +3,40 @@ import {
   getAvailableDevices,
   getPlaybackState,
   playTrack,
-} from "../services/playerServices"
+} from "../services/playerServices";
 
 import type { Track } from "../interfaces/Track";
-
-
-type props = {
-  uri: string;
-  playMode: "single" | "context";
-  isArtist: boolean;
-  track?: Track
-  offsetPosition?: number;
-};
+import type { MediaItem, PlaySettings } from "../shared/types/common";
 
 export const usePlayer = () => {
   const setPlayer = usePlayerStore((state) => state.setPlayer);
 
-  const play = async ({
-    uri,
-    playMode,
-    isArtist,
-    track,
-    offsetPosition,
-  }: props) => {
-    const result = await getAvailableDevices();
+  const play = async (settings: PlaySettings) => {
+    const devices = await getAvailableDevices();
 
-    if (result) {
-      const deviceId = result.devices[0].id;
-      await playTrack(
-        uri,
-        deviceId,
-        playMode,
-        isArtist,
-        offsetPosition
-      );
+    if (devices) {
+      const deviceId = devices.devices[0].id;
+      // Play song on Spotify
+      await playTrack(deviceId, settings);
 
-      if (track) {
+      // Get data from Spotify and set it in the store
+      setTimeout(async () => {
+        const data = await getPlaybackState();
 
-        
-        const {
-          name,
-          artists,
-          image,
-          duration,
-          progress,
-          isPlaying
-        } = track;
-        
-        setPlayer({
+        const currentPlayer = {
           track: {
-            name,
-            artists,
-            image,
-            duration,
-            progress,
+            name: data.item.name,
+            artists: data.item.artists.map((artist) => artist.name).join(", "),
+            image: data.item.album.images[0].url,
+            duration: data.item.duration_ms,
+            progress: data.progress_ms,
           },
-          isPlaying,
+          isPlaying: data.is_playing,
           playMode,
-        });
-      } else {
-        setTimeout(async () => {
-          const data = await getPlaybackState();
+        };
 
-          const currentPlayer = {
-            track: {
-              name: data.item.name,
-              artists: data.item.artists.map((artist) => artist.name).join(", "),
-              image: data.item.album.images[0].url,
-              duration: data.item.duration_ms,
-              progress: data.progress_ms,
-            },
-            isPlaying: data.is_playing,
-            playMode,
-          };
-
-          setPlayer(currentPlayer);
-        }, 600); // Because of the Spotify Player delay
-      }
+        setPlayer(currentPlayer);
+      }, 700); // Because of the Spotify Player delay
     }
   };
 

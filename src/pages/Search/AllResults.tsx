@@ -1,5 +1,5 @@
 import ResultSection from "../../components/ResultSection";
-import PlayButton from "../../components/Buttons/PlayButton";
+import PlayButton from "@components/buttons/PlayButton";
 import { useEffect, useState } from "react";
 import { searchForItem } from "../../services/searchServices";
 import { useParams } from "react-router-dom";
