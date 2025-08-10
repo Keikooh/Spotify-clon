@@ -1,6 +1,6 @@
 
 import { Outlet } from "react-router-dom";
-import ResultsNavbar from "../../components/partials/ResultsNavbar";
+import ResultsNavbar from "@components/partials/ResultsNavbar";
 
 const SearchResults = () => {
   return (

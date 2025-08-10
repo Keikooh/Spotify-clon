@@ -1,8 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { Home, MainHome, Callback, LoginComponent } from "./pages/index";
+import { Home, Callback, LoginComponent } from "./pages/index";
+import { AppLayout, SearchResultsLayout} from "./layouts/index"
 import {
-  SearchResults,
   ArtistsResults,
   AllResults,
   PlaylistsResults,
@@ -17,9 +17,9 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginComponent />} />
       <Route path="/callback" element={<Callback />} />
-      <Route path="/home" element={<MainHome />}>
+      <Route path="/home" element={<AppLayout />}>
         <Route index element={<Home />} />
-        <Route path="search/:query" element={<SearchResults />}>
+        <Route path="search/:query" element={<SearchResultsLayout />}>
           <Route index element={<AllResults />} />
           <Route path="tracks" element={<TracksResults />} />
           <Route path="albums" element={<AlbumsResults />} />
