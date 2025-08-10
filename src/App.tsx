@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { Home, Callback, LoginComponent } from "./pages/index";
+import { Home, Callback, Login } from "./pages/index";
 import { AppLayout, SearchResultsLayout} from "./layouts/index"
 import {
   ArtistsResults,
@@ -9,13 +9,13 @@ import {
   PodcastsResults,
   TracksResults,
   AlbumsResults,
-} from "./pages/Search/index";
-import { AlbumDetail, ArtistDetail, PlaylistDetail} from "./pages/Details/index"
+} from "./pages/search/index";
+import { AlbumDetail, ArtistDetail, PlaylistDetail} from "./pages/details/index"
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginComponent />} />
+      <Route path="/" element={<Login />} />
       <Route path="/callback" element={<Callback />} />
       <Route path="/home" element={<AppLayout />}>
         <Route index element={<Home />} />
