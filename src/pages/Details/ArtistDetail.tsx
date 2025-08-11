@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import DetailView from "../../components/details/DetailView"
+import DetailView from "@components/DetailView";
 import { getArtist, getArtistTopTrack } from "../../services/artistServices";
 import { formatNumber } from "../../utils/formats";
 

@@ -1,4 +1,4 @@
-import Table from "../tables/Table";
+import Table from "./tables/Table";
 import { LuPen } from "react-icons/lu";
 import { PiMusicNotesSimple } from "react-icons/pi";
 import PlayButton from "@components/buttons/PlayButton";

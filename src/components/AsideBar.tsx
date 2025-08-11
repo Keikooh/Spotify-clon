@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import Playlists from "../Playlists/Playlists";
+import Playlists from "./Playlists";
 import { TbWaveSine } from "react-icons/tb";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import {
   createPlaylist,
   getUserPlaylists,
-} from "../../services/playlistServices";
+} from "../services/playlistServices";
 import Button from "@components/buttons/Button";
 import type { ButtonProps } from "@shared/types/buttonTypes";
 import { buttonVariants } from "@shared/styles/buttonStyles";
 
-const SideBar = () => {
+const AsideBar = () => {
   const [playlists, setPlaylists] = useState([]);
   const [itemAdded, setitemAdded] = useState(false);
   const userId = localStorage.getItem("user_id");
@@ -58,9 +58,9 @@ const SideBar = () => {
         <h3 className="font-bold">Your library</h3>
         <Button {...button} />
       </div>
-      <Playlists style="vertical" list={playlists} />
+      <Playlists displayMode="list" playlists={playlists} />
     </aside>
   );
 };
 
-export default SideBar;
+export default AsideBar;

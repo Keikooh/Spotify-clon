@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAlbum } from "../../services/albumServices";
-import DetailView from "../../components/details/DetailView";
+import DetailView from "@components/DetailView";
 
 const AlbumDetail = () => {
   const { id } = useParams();

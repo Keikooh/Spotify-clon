@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PlayerBar from "../components/partials/PlayerBar";
-import SideBar from "../components/SideBar/SideBar";
+import AsideBar from "@components/AsideBar";
 
 import { getUserProfile } from "../services/userServices";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ const AppLayout = () => {
       <main className="flex-1 overflow-hidden">
         <div className="flex h-full gap-3">
           {/* SideBar */}
-          <SideBar />
+          <AsideBar />
 
           {/* App content */}
           <section className="flex-1 scroll overflow-hidden bg-gray-950 px-5 py-4 h-full">

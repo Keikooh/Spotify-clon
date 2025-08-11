@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 // services
 import { getPlaylist } from "../../services/playlistServices";
 
-// icons
-import DetailView from "../../components/details/DetailView";
+import DetailView from "@components/DetailView";
 
 const PlaylistDetail = () => {
   const { id } = useParams();
