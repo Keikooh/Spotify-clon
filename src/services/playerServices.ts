@@ -2,6 +2,7 @@ import { axiosInstance } from "./axiosInstance";
 
 // Interfaces
 import type { Devices, PlaybackState } from "../interfaces";
+import { MediaItems, PlayModes, type MediaItem, type PlaySettings } from "../shared/types/common";
 
 export const getAvailableDevices = async (): Promise<Devices> => {
   const { data } = await axiosInstance.get<Devices>("me/player/devices");
@@ -10,21 +11,25 @@ export const getAvailableDevices = async (): Promise<Devices> => {
 };
 
 export const playTrack = async (
-  trackUri: string,
   deviceId: string,
-  playMode: string,
-  isArtists: boolean,
-  offSetPosition: number = 0
+  settings: PlaySettings
 ): Promise<void> => {
-  const data = {
-    ...(playMode === "context"
-      ? { context_uri: trackUri }
-      : { uris: [trackUri] }),
-    ...(!isArtists && { offset: { position: offSetPosition } }),
-    position_ms: 0,
+
+  const { uri, playMode, mediaItem, progress, offSetPosition, } = settings
+
+  const body = {
+    ...(playMode === PlayModes.Context
+      ? { context_uri: uri }
+      : { uris: [uri] }),
+    ...( mediaItem !== MediaItems.Artist && { offset: { position: offSetPosition } }),
+    position_ms: progress,
   };
 
-  await axiosInstance.put(`me/player/play?device_id?=${deviceId}`, data);
+  await axiosInstance.put('me/player/play', body, {
+    params: {
+      device_id: deviceId
+    }
+  });
 };
 
 export const getPlaybackState = async (): Promise<PlaybackState> => {
@@ -76,6 +81,14 @@ export const setRepeatMode = async (
     params: {
       device_id: deviceId,
       state: state,
+    },
+  });
+};
+
+export const pausePlayerBack = async (deviceId: string): Promise<void> => {
+  await axiosInstance.put("me/player/pause", null, {
+    params: {
+      device_id: deviceId,
     },
   });
 };

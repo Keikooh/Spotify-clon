@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { usePlayerStore } from "../../app/store";
-import ControlButton from "./ControlButton";
+import { usePlayerStore } from "../../../store/PlayerStore";
 import { LuRepeat } from "react-icons/lu";
-import { getAvailableDevices, setRepeatMode } from "../../services/playerServices";
+import {
+  getAvailableDevices,
+  setRepeatMode,
+} from "../../../services/playerServices";
 import { LuRepeat1 } from "react-icons/lu";
+import ToggleButton from "@components/buttons/ToggleButton";
+import type { ToggleButtonProps } from "@shared/types/buttonTypes";
 
 const RepeatButton = () => {
   const playerState = usePlayerStore((state) => state.player);
@@ -17,7 +20,7 @@ const RepeatButton = () => {
     return "off";
   };
 
-  const handleRepeat = async () => {
+  const handleClick = async () => {
     const newRepeatMode = rotateRepeatMode(repeatMode);
     setPlayer({ repeatMode: newRepeatMode });
 
@@ -28,21 +31,18 @@ const RepeatButton = () => {
       await setRepeatMode(deviceId, newRepeatMode);
     }
   };
-  return (
-    <ControlButton
-      message="Repeat"
-      isEnabled={true}
-      icon={ repeatMode === "track" ? LuRepeat1: LuRepeat}
-      handleClick={handleRepeat}
-      mode={repeatMode}
-      size="size-2"
-      styles={`${repeatMode !== "off" && "text-green-300 relative"}`}
-    >
-      {repeatMode !== "off" && (
-        <div className="absolute -bottom-1 left-1/3 size-1 rounded-full bg-green-300"></div>
-      )}
-    </ControlButton>
-  );
+
+  const icon = repeatMode === "track" ? LuRepeat1 : LuRepeat;
+  const button:ToggleButtonProps = {
+    callback: handleClick,
+    icon,
+    title: "Repeat",
+    isEnabled: true,
+    isActive: repeatMode !== "off",
+    mode: repeatMode,
+  };
+  
+  return <ToggleButton {...button} />;
 };
 
 export default RepeatButton;

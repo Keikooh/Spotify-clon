@@ -1,11 +1,14 @@
-import Table from "../tables/Table";
+import Table from "./tables/Table";
 import { LuPen } from "react-icons/lu";
 import { PiMusicNotesSimple } from "react-icons/pi";
-import PlayButton from "../Buttons/PlayButton";
-import ShuffleButton from "../Buttons/ShuffleButton";
-import DeleteButton from "../Buttons/DeleteButton";
+import PlayButton from "@components/buttons/PlayButton";
+import ShuffleButton from "@components/buttons/controlButtons/ShuffleButton";
+import DeleteButton from "@components/buttons/controlButtons/RepeatButton";
 // Models
 import type { Track } from "../../interfaces/Track";
+import type { PlayButtonProps } from "@shared/types/buttonTypes";
+import { PlayModes } from "@shared/types/common";
+import { buttonPlayVariants } from "@shared/styles/buttonStyles";
 
 type props = {
   type: "album" | "playlist" | "artist";
@@ -28,6 +31,17 @@ const DetailView = ({
 }: props) => {
   const { image, title, subtitle, description } = headerData;
 
+  const button: PlayButtonProps = {
+    buttonStyle: buttonPlayVariants.filledGreen,
+    settings: {
+      uri: uri,
+      offSetPosition: 0,
+      playMode: PlayModes.Context, //
+      mediaItem: type,
+      progress: 0,
+      isPlaying: true,
+    },
+  };
   return (
     <div className="flex flex-col gap-y-4 h-full scroll overflow-y-auto">
       {/* header */}
@@ -82,14 +96,8 @@ const DetailView = ({
 
       {/* ControlBar */}
       <div className="mx-2 flex gap-2">
-        <PlayButton
-          uri={uri}
-          isArtist={type === "artist" ? true : false}
-          variant="floating"
-          styles="size-15 flex"
-          playMode="context"
-        />
-        <ShuffleButton size="size-10" />
+        <PlayButton {...button} />
+        <ShuffleButton />
         {isEditable && <DeleteButton />}
       </div>
 

@@ -1,5 +1,8 @@
-import PlayButton from "./Buttons/PlayButton";
+import PlayButton from "@components/buttons/PlayButton";
 import { Link } from "react-router-dom";
+import type { PlayButtonProps } from "@shared/types/buttonTypes";
+import { buttonPlayVariants } from "@shared/styles/buttonStyles";
+import { PlayModes } from "@shared/types/common";
 
 type Props = {
   data: {
@@ -16,6 +19,18 @@ type Props = {
 
 const CardItem: React.FC<Props> = ({ data, path, playMode }) => {
   const { id, uri, image, title, subtitle, type } = data;
+
+  const button: PlayButtonProps = {
+    buttonStyle: `${buttonPlayVariants.HiddenFilledGreen} bottom-2 right-2`,
+    settings: {
+      uri: uri,
+      offSetPosition: 0,
+      playMode: PlayModes.Context, //
+      mediaItem: type,
+      progress: 0,
+      isPlaying: true,
+    },
+  };
   return (
     <li
       key={id}
@@ -30,15 +45,7 @@ const CardItem: React.FC<Props> = ({ data, path, playMode }) => {
             src={image}
             alt={title}
           />
-          {playMode && (
-            <PlayButton
-              uri={uri}
-              isArtist={type === "artist"}
-              playMode={playMode}
-              variant="floating"
-              styles="size-12 hidden absolute bottom-2 right-2 group-hover:flex"
-            />
-          )}
+          {playMode && <PlayButton {...button} />}
         </div>
         <div className="flex flex-col gap-y-1">
           <p className="text-sm font-semibold">{title}</p>

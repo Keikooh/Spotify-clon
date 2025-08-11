@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ResultSection from "../components/ResultSection";
-import Playlists from "../components/Playlists/Playlists";
+import Playlists from "@components/Playlists";
 import { getUserTopItems } from "../services/userServices";
 import { getUserPlaylists } from "../services/playlistServices";
 
@@ -34,7 +34,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col h-full overflow-y-auto gap-y-10">
-      <Playlists style="horizontal" list={playlists} />
+      <Playlists displayMode="grid" playlists={playlists.slice(0,8)} />
       <ResultSection
         title="Top artists"
         wrap={false}

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import MainContent from "../components/MainContent";
-import PlayerBar from "../components/partials/PlayerBar";
-import SideBar from "../components/SideBar/SideBar";
+import PlayerBar from "@components/PlayerBar";
+import AsideBar from "@components/AsideBar";
 
 import { getUserProfile } from "../services/userServices";
-import { useNavigate } from "react-router-dom";
-import MainNavbar from "../components/partials/MainNavbar";
+import { Outlet, useNavigate } from "react-router-dom";
+import MainNavbar from "@components/navbars/MainNavbar";
 
-const MainHome = () => {
+const AppLayout = () => {
   const [profile, setProfile] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -32,10 +31,12 @@ const MainHome = () => {
       <main className="flex-1 overflow-hidden">
         <div className="flex h-full gap-3">
           {/* SideBar */}
-          <SideBar />
+          <AsideBar />
 
-          {/* MainContent */}
-          <MainContent />
+          {/* App content */}
+          <section className="flex-1 scroll overflow-hidden bg-gray-950 px-5 py-4 h-full">
+            <Outlet />
+          </section>
         </div>
       </main>
       <PlayerBar />
@@ -43,4 +44,4 @@ const MainHome = () => {
   );
 };
 
-export default MainHome;
+export default AppLayout;

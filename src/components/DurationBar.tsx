@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { formatTime, formatTimeSeconds } from "../utils/formats";
-import { usePlayerStore } from "../app/store";
+import { usePlayerStore } from "../store/PlayerStore";
 
 const DurationBar = () => {
   const player = usePlayerStore((state) => state.player);

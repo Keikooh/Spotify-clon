@@ -1,24 +1,26 @@
 import React, { Component, useEffect, useState } from "react";
-import DurationBar from "../DurationBar";
+import DurationBar from "@components/DurationBar";
 // React Icons
 
 import { IoMdPlay, IoIosPause } from "react-icons/io";
 import { FaRegHeart } from "react-icons/fa";
-import { TbMicrophone2, TbArrowsShuffle } from "react-icons/tb";
+import { TbMicrophone2 } from "react-icons/tb";
 import { MdVolumeUp, MdAddCircleOutline } from "react-icons/md";
 import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
-import { LuRepeat } from "react-icons/lu";
-import { usePlayerStore } from "../../app/store";
+import { usePlayerStore } from "../store/PlayerStore";
 
 import {
   getAvailableDevices,
   getPlaybackState,
   setPlaybackVolume,
-  skipTo
-} from "../../services/playerServices";
-import ControlButton from "../Buttons/ControlButton";
-import ShuffleButton from "../Buttons/ShuffleButton";
-import RepeatButton from "../Buttons/RepeatButton";
+  skipTo,
+} from "@services/playerServices";
+import ShuffleButton from "@components/buttons/controlButtons/ShuffleButton";
+import RepeatButton from "@components/buttons/controlButtons/RepeatButton";
+import Button from "@components/buttons/Button";
+import type { ButtonProps } from "@shared/types/buttonTypes";
+import { buttonVariants } from "@shared/styles/buttonStyles";
+import ResumeButton from "@components/buttons/controlButtons/ResumeButton";
 
 export const PlayerBar = () => {
   // Store
@@ -29,21 +31,19 @@ export const PlayerBar = () => {
     track: { name, artists, image },
     isPlaying,
     playMode,
-    repeatMode
+    repeatMode,
   } = playerState;
 
   // Handles
 
   const changeRepeatMode = () => {
-    
-    if(repeatMode === "track") {
-      return "context"
-    }else return repeatMode
-  }
-  const handleClick = () => {};
-  const handleNext = async () => {
+    if (repeatMode === "track") {
+      return "context";
+    } else return repeatMode;
+  };
 
-    setPlayer({repeatMode: changeRepeatMode()});
+  const handleNext = async () => {
+    setPlayer({ repeatMode: changeRepeatMode() });
     console.warn(repeatMode);
 
     const devices = await getAvailableDevices();
@@ -55,8 +55,9 @@ export const PlayerBar = () => {
   };
 
   const handlePrevious = async () => {
-    setPlayer({repeatMode: changeRepeatMode()});
-    
+    console.log("Go to previous track");
+    setPlayer({ repeatMode: changeRepeatMode() });
+
     const devices = await getAvailableDevices();
 
     if (devices) {
@@ -82,21 +83,20 @@ export const PlayerBar = () => {
 
         const shuffleIsActive = data.shuffle_state;
         const repeatMode = data.repeat_state;
-    
-          setPlayer({
-            track: {
-              name,
-              artists,
-              image,
-              duration,
-              progress,
-            },
-            isPlaying,
-            playMode: "single",
-            shuffleIsActive,
-            repeatMode
-          });
-        
+
+        setPlayer({
+          track: {
+            name,
+            artists,
+            image,
+            duration,
+            progress,
+          },
+          isPlaying,
+          playMode: "single",
+          shuffleIsActive,
+          repeatMode,
+        });
       }
     };
 
@@ -109,10 +109,26 @@ export const PlayerBar = () => {
 
     if (devices) {
       const deviceId = devices.devices[0].id;
-      await setPlaybackVolume( volumePercent, deviceId);
+      await setPlaybackVolume(volumePercent, deviceId);
     }
   };
 
+  const isContext = playMode === "single" ? false : true;
+  // Buttons
+  const toPreviousButton: ButtonProps = {
+    callback: handlePrevious,
+    icon: BiSkipPrevious,
+    title: "Previous",
+    buttonStyle: buttonVariants.transparent,
+    isEnabled: isContext,
+  };
+  const toNextButton: ButtonProps = {
+    callback: handleNext,
+    icon: BiSkipNext,
+    title: "Next",
+    buttonStyle: buttonVariants.transparent,
+    isEnabled: isContext,
+  };
   return (
     <footer className="h-20 flex w-full gap-3 bg-black text-gray-50 p-3">
       <div className="flex w-1/3 items-center gap-4 tracking-tight">
@@ -124,33 +140,17 @@ export const PlayerBar = () => {
 
         <MdAddCircleOutline />
       </div>
-      <div className="flex flex-col w-1/3 bg-reed-300">
+      <div className="flex flex-col w-1/3">
         {/* Controls */}
-        <div className="flex w-full justify-center items-center gap-4">
-          {/* Shuffle */}
+        <div className="flex w-full gap-x-3 justify-center items-center h-10">
+          {/* Activate shuffle mode*/}
           <ShuffleButton />
-          {/* Play previous */}
-          <ControlButton
-            message="Previous"
-            isEnabled={playMode === "single" ? false : true}
-            icon={BiSkipPrevious}
-            handleClick={handlePrevious}
-          />
-          <div
-            className="rounded-full bg-white p-2 text-black"
-            onClick={handleClick}
-          >
-            {isPlaying ? <IoIosPause /> : <IoMdPlay />}
-          </div>
-          {/* Play next */}
-          <ControlButton
-            message="Next"
-            isEnabled={playMode === "single" ? false : true}
-            icon={BiSkipNext}
-            handleClick={handleNext}
-          />
-
-          {/* Repeat */}
+          {/* Play previous song*/}
+          <Button {...toPreviousButton} />
+          <ResumeButton />
+          {/* Play next song*/}
+          <Button {...toNextButton} />
+          {/*Switch repeat mode*/}
           <RepeatButton />
         </div>
         <DurationBar />
