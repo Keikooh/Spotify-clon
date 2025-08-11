@@ -1,4 +1,4 @@
-import { usePlayerStore } from "../../../app/store";
+import { usePlayerStore } from "../../../store/PlayerStore";
 import { LuRepeat } from "react-icons/lu";
 import {
   getAvailableDevices,

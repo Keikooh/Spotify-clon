@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import ToggleButton from "@components/buttons/ToggleButton";
-import { usePlayerStore } from "../../../app/store";
+import { usePlayerStore } from "../../../store/PlayerStore";
 import { TbArrowsShuffle } from "react-icons/tb";
 import {
   getAvailableDevices,

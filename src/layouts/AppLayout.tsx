@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import PlayerBar from "../components/partials/PlayerBar";
+import PlayerBar from "@components/PlayerBar";
 import AsideBar from "@components/AsideBar";
 
 import { getUserProfile } from "../services/userServices";
 import { Outlet, useNavigate } from "react-router-dom";
-import MainNavbar from "../components/partials/MainNavbar";
+import MainNavbar from "@components/navbars/MainNavbar";
 
 const AppLayout = () => {
   const [profile, setProfile] = useState<any>(null);

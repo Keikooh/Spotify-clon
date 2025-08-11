@@ -1,4 +1,4 @@
-import { usePlayerStore } from "../app/store";
+import { usePlayerStore } from "../store/PlayerStore";
 import {
   getAvailableDevices,
   getPlaybackState,

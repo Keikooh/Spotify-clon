@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import DurationBar from "../DurationBar";
+import DurationBar from "@components/DurationBar";
 // React Icons
 
 import { IoMdPlay, IoIosPause } from "react-icons/io";
@@ -7,14 +7,14 @@ import { FaRegHeart } from "react-icons/fa";
 import { TbMicrophone2 } from "react-icons/tb";
 import { MdVolumeUp, MdAddCircleOutline } from "react-icons/md";
 import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
-import { usePlayerStore } from "../../app/store";
+import { usePlayerStore } from "../store/PlayerStore";
 
 import {
   getAvailableDevices,
   getPlaybackState,
   setPlaybackVolume,
   skipTo,
-} from "../../services/playerServices";
+} from "@services/playerServices";
 import ShuffleButton from "@components/buttons/controlButtons/ShuffleButton";
 import RepeatButton from "@components/buttons/controlButtons/RepeatButton";
 import Button from "@components/buttons/Button";

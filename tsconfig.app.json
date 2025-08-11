@@ -28,6 +28,8 @@
       "@shared/*": ["shared/*"],
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
+      "@services*": ["services/*"],
+
     }
   },
   "include": ["src"]

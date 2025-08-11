@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { usePlayerStore } from "../../../app/store";
+import { usePlayerStore } from "../../../store/PlayerStore";
 import type { ButtonProps } from "@shared/types/buttonTypes";
 import { IoIosPause, IoMdPlay } from "react-icons/io";
 import Button from "@components/buttons/Button";
