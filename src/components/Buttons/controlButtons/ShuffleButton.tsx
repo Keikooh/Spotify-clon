@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import ToggleButton from "@components/buttons/ToggleButton";
-import { usePlayerStore } from "../../../store/PlayerStore";
+import { usePlayerbackStore } from "../../../store/PlayerbackStore";
 import { TbArrowsShuffle } from "react-icons/tb";
 import {
   getAvailableDevices,
@@ -9,16 +9,17 @@ import {
 
 const ShuffleButton = () => {
   // Store
-  const setPlayer = usePlayerStore((state) => state.setPlayer);
-  const { shuffleIsActive, playMode } = usePlayerStore((state) => state.player);
+  const setPlayerback = usePlayerbackStore((state) => state.setPlayerback);
+  const { settings } = usePlayerbackStore((state) => state.playerback);
 
-  const shuffleState = shuffleIsActive;
-  const isEnabled = playMode === "single" ? false : true;
+  const { shuffleMode, actions } = settings;
+  const shuffleState = shuffleMode;
+  const isEnabled = actions.toggling_shuffle ? false : true;
 
   // Handles
   const handleClick = async () => {
     const newShuffleState = !shuffleState;
-    setPlayer({ shuffleIsActive: newShuffleState });
+    setPlayerback({ settings:{ shuffleMode: newShuffleState } });
     const devices = await getAvailableDevices();
 
     if (devices) {

@@ -7,10 +7,35 @@ export type PlaySettings = {
   offSetPosition?: number;
 };
 
-export const PlayModes = {
-  Context: "context",
-  Single: "single",
+export type Playerback = {
+  track: {
+    name: string;
+    artists: string;
+    image: string;
+    duration: number;
+  };
+  settings: Pick<PlaySettings, "progress" | "isPlaying"> & {
+    volume: number;
+    shuffleMode: boolean;
+    repeatMode: RepeatMode;
+    actions: {
+      toggling_repeat_context?: boolean;
+      toggling_repeat_track?: boolean;
+      toggling_shuffle?: boolean;
+    };
+  };
 };
+
+// Repeat mode
+export const RepeatModes = {
+  Track: "track",
+  Context: "context",
+  Off: "off",
+};
+
+export type RepeatMode = (typeof RepeatModes)[keyof typeof RepeatModes];
+
+export const PlayModes = { Single: "single", Context: "context" };
 
 export type PlayMode = (typeof PlayModes)[keyof typeof PlayModes];
 
@@ -22,5 +47,3 @@ export const MediaItems = {
 };
 
 export type MediaItem = (typeof MediaItems)[keyof typeof MediaItems];
-
-
