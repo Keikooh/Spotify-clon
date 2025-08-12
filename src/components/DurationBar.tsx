@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { formatTime, formatTimeSeconds } from "../utils/formats";
-import { usePlayerStore } from "../store/PlayerStore";
+import { usePlayerbackStore } from "../store/PlayerbackStore";
 
 const DurationBar = () => {
-  const player = usePlayerStore((state) => state.player);
+  const playerback = usePlayerbackStore((state) => state.playerback);
 
   const {
-    track: { duration: duration_ms, progress: progress_ms },
-    isPlaying,
-  } = player;
+    track: { duration: duration_ms },
+    settings: {
+      progress: progress_ms,
+      isPlaying
+    }
+  } = playerback;
 
   const duration = isPlaying ? Math.floor(duration_ms / 1000) : 0;
   const [progress, setProgress] = useState(progress_ms);
@@ -26,7 +29,7 @@ const DurationBar = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [player.track]);
+  }, [playerback.track]);
 
   useEffect(() => {
     setProgressFormat(formatTimeSeconds(progress));

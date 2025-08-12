@@ -1,15 +1,18 @@
-import { usePlayerStore } from "../store/PlayerStore";
+import { usePlayerbackStore } from "../store/PlayerbackStore";
 import {
   getAvailableDevices,
   getPlaybackState,
   playTrack,
 } from "../services/playerServices";
 
-import type { Track } from "../interfaces/Track";
-import type { MediaItem, PlaySettings } from "../shared/types/common";
+import {
+  type Playerback,
+  type PlaySettings,
+} from "../shared/types/common";
+import { getCoverImage } from "@utils/images";
 
 export const usePlayer = () => {
-  const setPlayer = usePlayerStore((state) => state.setPlayer);
+  const setPlayerback = usePlayerbackStore((state) => state.setPlayerback);
 
   const play = async (settings: PlaySettings) => {
     const devices = await getAvailableDevices();
@@ -23,19 +26,28 @@ export const usePlayer = () => {
       setTimeout(async () => {
         const data = await getPlaybackState();
 
-        const currentPlayer = {
+        const playerbackState: Playerback = {
           track: {
             name: data.item.name,
             artists: data.item.artists.map((artist) => artist.name).join(", "),
-            image: data.item.album.images[0].url,
+            image: getCoverImage(data.item.album.images),
             duration: data.item.duration_ms,
-            progress: data.progress_ms,
           },
-          isPlaying: data.is_playing,
-          playMode,
+          settings: {
+            progress: data.progress_ms,
+            isPlaying: data.is_playing,
+            volume: data.device.volume_percent,
+            shuffleMode: data.shuffle_state,
+            repeatMode: data.repeat_state,
+            actions: {
+              toggling_repeat_context: data.actions.disallows.toggling_repeat_context,
+              toggling_repeat_track: data.actions.disallows.toggling_repeat_track,
+              toggling_shuffle: data.actions.disallows.toggling_shuffle,
+            },
+          },
         };
 
-        setPlayer(currentPlayer);
+        setPlayerback(playerbackState);
       }, 700); // Because of the Spotify Player delay
     }
   };

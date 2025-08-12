@@ -1,4 +1,4 @@
-import { usePlayerStore } from "../../../store/PlayerStore";
+import { usePlayerbackStore } from "../../../store/PlayerbackStore";
 import { LuRepeat } from "react-icons/lu";
 import {
   getAvailableDevices,
@@ -9,10 +9,16 @@ import ToggleButton from "@components/buttons/ToggleButton";
 import type { ToggleButtonProps } from "@shared/types/buttonTypes";
 
 const RepeatButton = () => {
-  const playerState = usePlayerStore((state) => state.player);
-  const setPlayer = usePlayerStore((state) => state.setPlayer);
+  const playerback = usePlayerbackStore((state) => state.playerback);
+  const setPlayerback = usePlayerbackStore((state) => state.setPlayerback);
 
-  const { repeatMode } = playerState;
+  const { settings } = playerback;
+
+  const { repeatMode, actions } = settings;
+  const isEnabled =
+    actions.toggling_repeat_context && actions.toggling_repeat_track
+      ? false
+      : true;
 
   const rotateRepeatMode = (currentMode: "context" | "track" | "off") => {
     if (currentMode === "off") return "context";
@@ -22,7 +28,7 @@ const RepeatButton = () => {
 
   const handleClick = async () => {
     const newRepeatMode = rotateRepeatMode(repeatMode);
-    setPlayer({ repeatMode: newRepeatMode });
+    setPlayerback({ settings: { repeatMode: newRepeatMode } });
 
     const devices = await getAvailableDevices();
 
@@ -33,15 +39,15 @@ const RepeatButton = () => {
   };
 
   const icon = repeatMode === "track" ? LuRepeat1 : LuRepeat;
-  const button:ToggleButtonProps = {
+  const button: ToggleButtonProps = {
     callback: handleClick,
     icon,
     title: "Repeat",
-    isEnabled: true,
+    isEnabled,
     isActive: repeatMode !== "off",
     mode: repeatMode,
   };
-  
+
   return <ToggleButton {...button} />;
 };
 

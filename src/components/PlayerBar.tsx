@@ -7,7 +7,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { TbMicrophone2 } from "react-icons/tb";
 import { MdVolumeUp, MdAddCircleOutline } from "react-icons/md";
 import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
-import { usePlayerStore } from "../store/PlayerStore";
+import { usePlayerbackStore } from "../store/PlayerbackStore";
 
 import {
   getAvailableDevices,
@@ -21,30 +21,29 @@ import Button from "@components/buttons/Button";
 import type { ButtonProps } from "@shared/types/buttonTypes";
 import { buttonVariants } from "@shared/styles/buttonStyles";
 import ResumeButton from "@components/buttons/controlButtons/ResumeButton";
+import { RepeatModes } from "@shared/types/common";
+import { getCoverImage } from "@utils/images";
 
 export const PlayerBar = () => {
   // Store
-  const playerState = usePlayerStore((state) => state.player);
-  const setPlayer = usePlayerStore((state) => state.setPlayer);
+  const playerback = usePlayerbackStore((state) => state.playerback);
+  const setPlayerback = usePlayerbackStore((state) => state.setPlayerback);
 
   const {
     track: { name, artists, image },
-    isPlaying,
-    playMode,
-    repeatMode,
-  } = playerState;
+    settings: { playMode, volume, repeatMode },
+  } = playerback;
 
   // Handles
 
   const changeRepeatMode = () => {
-    if (repeatMode === "track") {
-      return "context";
+    if (repeatMode === RepeatModes.Track) {
+      return RepeatModes.Context;
     } else return repeatMode;
   };
 
   const handleNext = async () => {
-    setPlayer({ repeatMode: changeRepeatMode() });
-    console.warn(repeatMode);
+    setPlayerback({ settings: { repeatMode: changeRepeatMode() } });
 
     const devices = await getAvailableDevices();
 
@@ -56,7 +55,7 @@ export const PlayerBar = () => {
 
   const handlePrevious = async () => {
     console.log("Go to previous track");
-    setPlayer({ repeatMode: changeRepeatMode() });
+    setPlayerback({ settings: { repeatMode: changeRepeatMode() } });
 
     const devices = await getAvailableDevices();
 
@@ -71,31 +70,25 @@ export const PlayerBar = () => {
       const data = await getPlaybackState();
 
       if (data) {
-        const isPlaying = data.is_playing;
-
-        const name = data.item.name;
-        const image = data.item.album.images[0].url;
-        const duration = data.item.duration_ms;
-        const progress = data.progress_ms;
-        const artists = data.item.artists
-          .map((artist) => artist.name)
-          .join(", ");
-
-        const shuffleIsActive = data.shuffle_state;
-        const repeatMode = data.repeat_state;
-
-        setPlayer({
+        setPlayerback({
           track: {
-            name,
-            artists,
-            image,
-            duration,
-            progress,
+            name: data.item.name,
+            artists: data.item.artists.map((artist) => artist.name).join(", "),
+            image: getCoverImage(data.item.album.images),
+            duration: data.item.duration_ms,
           },
-          isPlaying,
-          playMode: "single",
-          shuffleIsActive,
-          repeatMode,
+          settings: {
+            isPlaying: data.is_playing,
+            progress: data.progress_ms,
+            volume: data.device.volume_percent,
+            shuffleMode: data.shuffle_state,
+            repeatMode: data.repeat_state,
+            actions: {
+              toggling_repeat_context: data.actions.disallows.toggling_repeat_context,
+              toggling_repeat_track: data.actions.disallows.toggling_repeat_track,
+              toggling_shuffle: data.actions.disallows.toggling_shuffle,
+            },
+          },
         });
       }
     };
@@ -132,7 +125,7 @@ export const PlayerBar = () => {
   return (
     <footer className="h-20 flex w-full gap-3 bg-black text-gray-50 p-3">
       <div className="flex w-1/3 items-center gap-4 tracking-tight">
-        <img className="w-15 h-15 rounded-lg" src={image} alt={name} />
+        <img className="w-15 h-15 rounded-lg" src={image} alt="not-found" />
         <div className="flex flex-col">
           <span className="font-semibold">{name}</span>
           <span className="opacity-70 text-sm">{artists}</span>
@@ -163,6 +156,7 @@ export const PlayerBar = () => {
           <input
             type="range"
             className="w-1/2"
+            value={volume}
             min="0"
             max="100"
             onMouseUp={handleChange}
