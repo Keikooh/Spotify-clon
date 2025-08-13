@@ -26,7 +26,7 @@ const Table = ({ type, tracks }: props) => {
     <table className="table-fixed w-full text-left rtl:text-right">
       {type !== "artist" && (
         <thead className="text-left p-2">
-          <tr className="border-b border-gray-800 w-full">
+          <tr className="border-b border-white/20 w-full">
             <th scope="col" className="px-6 py-3 w-5 w-10">
               #
             </th>
@@ -52,7 +52,7 @@ const Table = ({ type, tracks }: props) => {
 
       <tbody>
         {tracks.map((item, index) => (
-          <tr className="w-full group hover:bg-gray-800 transition duration-150 cursor-pointer">
+          <tr className="w-full group hover:bg-white/20 transition duration-150 cursor-pointer">
             <td scope="row" className="relative px-6 py-2 text-center w-10">
               <div className="relative flex justify-center items-center w-full h-full">
                 <span className="group-hover:hidden">{index + 1}</span>
