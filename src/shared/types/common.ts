@@ -1,9 +1,9 @@
 export type PlaySettings = {
-  uri: string;
-  playMode: PlayMode;
-  mediaItem: MediaItem;
-  progress: number;
-  isPlaying: boolean;
+  uri?: string;
+  playMode?: PlayMode;
+  mediaItem?: MediaItem;
+  progress?: number;
+  isPlaying?: boolean;
   offSetPosition?: number;
 };
 

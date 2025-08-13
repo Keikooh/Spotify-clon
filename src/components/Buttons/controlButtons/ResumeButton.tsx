@@ -6,15 +6,17 @@ import Button from "@components/buttons/Button";
 import {
   getAvailableDevices,
   pausePlayerBack,
-} from "../../../services/playerServices";
-import { buttonVariants } from "../../../shared/styles/buttonStyles";
+} from "@services/playerServices";
+import { buttonVariants } from "@shared/styles/buttonStyles";
+import { usePlay } from "../../../hooks/usePlay";
 
 const ResumeButton = () => {
   // Store
   const playerback = usePlayerbackStore((state) => state.playerback);
   const setPlayerback = usePlayerbackStore((state) => state.setPlayerback);
-  const { settings } = playerback;
-  const { isPlaying } = settings;
+  const { settings: { isPlaying} } = playerback;
+
+  const play = usePlay();
 
   const handlePause = async () => {
     const devices = await getAvailableDevices();
@@ -23,14 +25,13 @@ const ResumeButton = () => {
       const deviceId = devices.devices[0].id;
       await pausePlayerBack(deviceId);
     }
-    setPlayerback({ settings: {isPlaying: false} });
+    setPlayerback({ settings: { isPlaying: false } });
   };
 
   const handleResume = async () => {
-    setPlayerback({ settings: {isPlaying: true} });
+    play();
+    setPlayerback({ settings: { isPlaying: true } });
   };
-
-  useEffect(() => { console.log(isPlaying)}, [isPlaying]);
 
   const callback = isPlaying ? handlePause : handleResume;
   const icon = isPlaying ? IoIosPause : IoMdPlay;

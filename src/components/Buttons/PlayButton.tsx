@@ -1,14 +1,12 @@
-import { usePlayer } from "../../hooks/usePlayer";
+import { usePlay } from "../../hooks/usePlay";
 
 // icons
 import { FaPlay } from "react-icons/fa";
 import Button from "@components/buttons/Button";
 import type { ButtonProps, PlayButtonProps } from "@shared/types/buttonTypes";
 
-// top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-
 const PlayButton = ({ buttonStyle, settings }: PlayButtonProps) => {
-  const play = usePlayer();
+  const play = usePlay();
 
   const callback = () => {
     play(settings);
