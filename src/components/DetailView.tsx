@@ -2,13 +2,14 @@ import Table from "./tables/Table";
 import { LuPen } from "react-icons/lu";
 import { PiMusicNotesSimple } from "react-icons/pi";
 import PlayButton from "@components/buttons/PlayButton";
-import ShuffleButton from "@components/buttons/controlButtons/ShuffleButton";
 import DeleteButton from "@components/buttons/controlButtons/RepeatButton";
 // Models
-import type { Track } from "../../interfaces/Track";
+
 import type { PlayButtonProps } from "@shared/types/buttonTypes";
 import { PlayModes } from "@shared/types/common";
 import { buttonPlayVariants } from "@shared/styles/buttonStyles";
+import { getCoverImageDominantColor } from "../utils/images";
+import { useState } from "react";
 
 type props = {
   type: "album" | "playlist" | "artist";
@@ -29,6 +30,7 @@ const DetailView = ({
   itemsList,
   isEditable,
 }: props) => {
+  const [dominantColor, setDominantColor] = useState<number[]>([]);
   const { image, title, subtitle, description } = headerData;
 
   const button: PlayButtonProps = {
@@ -42,17 +44,33 @@ const DetailView = ({
       isPlaying: true,
     },
   };
+
+  const getDominantColor = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const image = e.currentTarget;
+    const dominantColor = getCoverImageDominantColor(image);
+    setDominantColor(dominantColor);
+  };
+
   return (
-    <div className="flex flex-col gap-y-4 h-full scroll overflow-y-auto">
+    <div
+      className="rounded-xl flex flex-col gap-y-4 h-full scroll overflow-y-auto"
+      style={{
+        background: `linear-gradient(180deg, rgb(${dominantColor.join(
+          ","
+        )}) , transparent)`,
+      }}
+    >
       {/* header */}
       {type !== "artist" && (
-        <div className="flex gap-4 items-end">
+        <div className="p-3 flex gap-4 items-end">
           <div className="w-55 h-55 relative group">
             <div className="w-full h-full group-hover:brightness-50 transition">
               {image.length > 0 ? (
                 <img
                   src={image}
                   alt={title}
+                  crossOrigin="anonymous"
+                  onLoad={getDominantColor}
                   className="w-full h-full object-cover filter shadox-xl rounded-sm"
                 />
               ) : (
@@ -84,7 +102,7 @@ const DetailView = ({
       )}
 
       {type === "artist" && (
-        <div className="relative w-full h-80">
+        <div className="p-3 relative w-full h-80">
           <img src={image} className="object-cover w-full h-80 brightness-50" />
           <div className="absolute inset-0 flex flex-col justify-center gap-2 px-5">
             <span className="font-semibold">{subtitle}</span>
@@ -94,23 +112,24 @@ const DetailView = ({
         </div>
       )}
 
-      {/* ControlBar */}
-      <div className="mx-2 flex gap-2">
-        <PlayButton {...button} />
-        <ShuffleButton />
-        {isEditable && <DeleteButton />}
+      <div className="bg-black/40 p-4">
+        {/* ControlBar */}
+        <div className="mx-2 my-10 flex gap-5">
+          <PlayButton {...button} />
+          {isEditable && <DeleteButton />}
+        </div>
+
+        {type === "artist" && <h4 className="font-bold text-2xl">Popular</h4>}
+        {/* Table */}
+
+        {itemsList.length > 0 ? (
+          <Table type={type} tracks={itemsList} />
+        ) : (
+          <p className="text-center text-2xl opacity-70 font-semibold">
+            Add some music to your new playlist
+          </p>
+        )}
       </div>
-
-      {type === "artist" && <h4 className="font-bold text-2xl">Popular</h4>}
-      {/* Table */}
-
-      {itemsList.length > 0 ? (
-        <Table type={type} tracks={itemsList} />
-      ) : (
-        <p className="text-center text-2xl opacity-70 font-semibold">
-          Add some music to your new playlist
-        </p>
-      )}
     </div>
   );
 };

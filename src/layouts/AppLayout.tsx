@@ -34,7 +34,7 @@ const AppLayout = () => {
           <AsideBar />
 
           {/* App content */}
-          <section className="flex-1 scroll overflow-hidden bg-gray-950 px-5 py-4 h-full">
+          <section className="flex-1 scroll overflow-hidden bg-gray-950 h-full">
             <Outlet />
           </section>
         </div>
