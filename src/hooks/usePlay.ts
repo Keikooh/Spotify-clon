@@ -5,16 +5,13 @@ import {
   playTrack,
 } from "../services/playerServices";
 
-import {
-  type Playerback,
-  type PlaySettings,
-} from "../shared/types/common";
+import { type Playerback, type PlaySettings } from "../shared/types/common";
 import { getCoverImage } from "@utils/images";
 
-export const usePlayer = () => {
+export const usePlay = () => {
   const setPlayerback = usePlayerbackStore((state) => state.setPlayerback);
 
-  const play = async (settings: PlaySettings) => {
+  const play = async (settings?:PlaySettings) => {
     const devices = await getAvailableDevices();
 
     if (devices) {
@@ -40,8 +37,10 @@ export const usePlayer = () => {
             shuffleMode: data.shuffle_state,
             repeatMode: data.repeat_state,
             actions: {
-              toggling_repeat_context: data.actions.disallows.toggling_repeat_context,
-              toggling_repeat_track: data.actions.disallows.toggling_repeat_track,
+              toggling_repeat_context:
+                data.actions.disallows.toggling_repeat_context,
+              toggling_repeat_track:
+                data.actions.disallows.toggling_repeat_track,
               toggling_shuffle: data.actions.disallows.toggling_shuffle,
             },
           },
