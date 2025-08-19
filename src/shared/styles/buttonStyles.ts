@@ -6,7 +6,7 @@ export const buttonVariants = {
   filledGray: `${filled} bg-gray-900 hover:bg-gray-700`,
   filledWhite: `${notHidden} rounded-full p-1 text-xl bg-white hover:bg-gray-100 text-gray-900`,
   pill: `${notHidden} px-4 py-1 rounded-full bg-gray-900 hover:bg-gray-700 text-md`,
-  transparent: "text-4xl",
+  transparent: "text-4xl flex flex-col justify-center items-center",
 };
 
 export const buttonPlayVariants = {
