@@ -1,38 +1,55 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-// services
-import { getPlaylist } from "../../services/playlistServices";
-
+// Types
+import type { Playlist } from "../../interfaces/playlists";
+// Services
+import { getPlaylist } from "@services/playlistServices";
+// Components
 import DetailView from "@components/DetailView";
+import { getCoverImage } from '../../utils/images';
 
 const PlaylistDetail = () => {
   const { id } = useParams();
-  const [playlist, setplaylist] = useState(null);
+  const [playlist, setplaylist] = useState<Playlist>();
+
+  const fetchPlaylist = async () => {
+    const data = await getPlaylist(id!);
+
+    if (data) {
+      setplaylist(data);
+      console.log(data);
+    }
+  };
 
   useEffect(() => {
-    const fetchPlaylist = async (id) => {
-      const data = await getPlaylist(id);
-
-      if (data) {
-        setplaylist(data);
-        console.log(data);
-      }
-    };
-
-    fetchPlaylist(id);
+    fetchPlaylist();
   }, [id]);
 
   if (playlist) {
+    const {
+      uri,
+      name,
+      description,
+      images,
+      owner: { display_name },
+      tracks: {
+        items: { length },
+      },
+    } = playlist;
+
+    const isEditable = playlist.owner.id === localStorage.getItem("user_id") ? true : false;
+
     return (
       <DetailView
+        onUpdated={fetchPlaylist}
+        isEditable={isEditable}
         type="playlist"
-        uri={playlist.uri}
+        uri={uri}
         headerData={{
-          image:  playlist.images ? playlist.images[0]?.url : "" ,
-          title: playlist.name,
-          subtitle: "Public playlist",
-          description: `${playlist.owner.display_name} ${playlist.tracks.items.length} songs`,
+          image: getCoverImage(images),
+          title: name,
+          description: description,
+          subtitle: `${display_name} ${length} songs`,
         }}
         itemsList={playlist.tracks.items?.map((item) => ({
           uri: playlist.uri,
@@ -43,11 +60,10 @@ const PlaylistDetail = () => {
           albumName: item.track.album.name,
           addedAt: item.added_at,
         }))}
-        isEditable={true}
       />
     );
   } else {
-    return <p>Cargando</p>;
+    return <p>Loading ...</p>;
   }
 };
 

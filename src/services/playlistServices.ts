@@ -38,3 +38,25 @@ export const getUserPlaylists = async (
 
   return data;
 };
+
+export const addCustomPlaylistCoverImage = async (
+  playlistId: string,
+  imageBase64: string
+) => {
+  await axiosInstance.put(`playlists/${playlistId}/images`, imageBase64, {
+    headers: {
+      "Content-Type": "image/jpeg",
+    },
+  });
+};
+
+export const changePlaylistDetails = async (
+  playlistId: string,
+  name: string,
+  description: string
+) => {
+  await axiosInstance.put(`playlists/${playlistId}`, {
+    name,
+    description,
+  });
+};

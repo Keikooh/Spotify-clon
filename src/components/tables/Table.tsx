@@ -5,23 +5,15 @@ import { formatDate, formatTime } from "../../utils/formats";
 
 // Models
 import type { Track } from "../../interfaces/Track";
-import { PlayModes } from "@shared/types/common";
+import { PlayModes, type MediaItem } from "@shared/types/common";
 import { buttonPlayVariants } from "@shared/styles/buttonStyles";
 
-
 type props = {
-  type: "artist" | "album" | "playlist" | "tracks";
+  type: MediaItem;
   tracks: Track[];
 };
 
-
-
-
 const Table = ({ type, tracks }: props) => {
-
-  useEffect(() => {
-  console.log(type)
-}, [])
   return (
     <table className="table-fixed w-full text-left rtl:text-right">
       {type !== "artist" && (
@@ -60,7 +52,8 @@ const Table = ({ type, tracks }: props) => {
                   buttonStyle={buttonPlayVariants.HiddenTransparent}
                   settings={{
                     uri: item.uri,
-                    playMode: type === "tracks" ? PlayModes.Single : PlayModes.Context,
+                    playMode:
+                      type === "tracks" ? PlayModes.Single : PlayModes.Context,
                     mediaItem: type,
                     offSetPosition: type === "tracks" ? 0 : index,
                     progress: 0,
